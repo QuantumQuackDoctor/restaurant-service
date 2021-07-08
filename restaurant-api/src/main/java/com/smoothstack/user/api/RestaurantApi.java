@@ -5,6 +5,7 @@
  */
 package com.smoothstack.user.api;
 
+import com.database.ormlibrary.food.RestaurantEntity;
 import com.smoothstack.user.model.Restaurant;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
@@ -145,7 +146,7 @@ public interface RestaurantApi {
         value = "/restaurant",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<Restaurant>> getFood(@NotNull @ApiParam(value = "Main search term", required = true) @Valid @RequestParam(value = "search", required = true) String search,@NotNull @ApiParam(value = "Location to search around", required = true) @Valid @RequestParam(value = "geolocation", required = true) String geolocation,@ApiParam(value = "distance from location, default <=20 miles") @Valid @RequestParam(value = "distance", required = false) String distance,@ApiParam(value = "comma separated list of allergens, exclude matches") @Valid @RequestParam(value = "filter-allergens", required = false) String filterAllergens,@ApiParam(value = "comma separated list of dietary restrictions, only show matches") @Valid @RequestParam(value = "filter-dietary-restrictions", required = false) String filterDietaryRestrictions,@ApiParam(value = ">= stars will be included") @Valid @RequestParam(value = "stars", required = false) Integer stars,@Min(0)@ApiParam(value = "page to return indexed by 0") @Valid @RequestParam(value = "page", required = false) Integer page,@Min(1)@ApiParam(value = "items in page") @Valid @RequestParam(value = "size", required = false) Integer size) {
+    default ResponseEntity<List<RestaurantEntity>> getFood(@NotNull @ApiParam(value = "Main search term", required = true) @Valid @RequestParam(value = "search", required = true) String search, @NotNull @ApiParam(value = "Location to search around", required = true) @Valid @RequestParam(value = "geolocation", required = true) String geolocation, @ApiParam(value = "distance from location, default <=20 miles") @Valid @RequestParam(value = "distance", required = false) String distance, @ApiParam(value = "comma separated list of allergens, exclude matches") @Valid @RequestParam(value = "filter-allergens", required = false) String filterAllergens, @ApiParam(value = "comma separated list of dietary restrictions, only show matches") @Valid @RequestParam(value = "filter-dietary-restrictions", required = false) String filterDietaryRestrictions, @ApiParam(value = ">= stars will be included") @Valid @RequestParam(value = "stars", required = false) Integer stars, @Min(0)@ApiParam(value = "page to return indexed by 0") @Valid @RequestParam(value = "page", required = false) Integer page, @Min(1)@ApiParam(value = "items in page") @Valid @RequestParam(value = "size", required = false) Integer size) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -242,7 +243,11 @@ public interface RestaurantApi {
         produces = { "application/json" },
         consumes = { "application/json", "application/xml" }
     )
-    default ResponseEntity<Void> updateRestaurant(@ApiParam(value = "Non null properties will be updated, id necessary"  )  @Valid @RequestBody(required = false) Restaurant restaurant) {
+    default ResponseEntity<Void> update
+
+
+
+    (@ApiParam(value = "Non null properties will be updated, id necessary"  )  @Valid @RequestBody(required = false) RestaurantEntity restaurant) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

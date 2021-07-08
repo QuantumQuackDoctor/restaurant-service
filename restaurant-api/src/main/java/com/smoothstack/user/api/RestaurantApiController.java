@@ -1,6 +1,9 @@
 package com.smoothstack.user.api;
 
+import com.database.ormlibrary.food.RestaurantEntity;
 import com.smoothstack.user.model.Restaurant;
+import com.smoothstack.user.service.RestaurantService;
+import com.smoothstack.user.service.SearchService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,10 +18,12 @@ import java.util.Optional;
 public class RestaurantApiController implements RestaurantApi {
 
     private final NativeWebRequest request;
+    private final SearchService searchService;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public RestaurantApiController(NativeWebRequest request) {
+    public RestaurantApiController(NativeWebRequest request, SearchService searchService) {
         this.request = request;
+        this.searchService = searchService;
     }
 
     @Override
@@ -27,8 +32,8 @@ public class RestaurantApiController implements RestaurantApi {
     }
 
     @Override
-    public ResponseEntity<List<Restaurant>> getFood(String search, String geolocation, String distance, String filterAllergens, String filterDietaryRestrictions, Integer stars, Integer page, Integer size) {
+    public ResponseEntity<List<RestaurantEntity>> getFood(String search, String geolocation, String distance, String filterAllergens, String filterDietaryRestrictions, Integer stars, Integer page, Integer size) {
         // return RestaurantApi.super.getFood(search, geolocation, distance, filterAllergens, filterDietaryRestrictions, stars, page, size);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<List<RestaurantEntity>>(searchService.search(search, geolocation), HttpStatus.OK);
     }
 }
