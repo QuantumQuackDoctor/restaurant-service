@@ -19,11 +19,13 @@ public class RestaurantApiController implements RestaurantApi {
 
     private final NativeWebRequest request;
     private final SearchService searchService;
+    private final RestaurantService restaurantService;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public RestaurantApiController(NativeWebRequest request, SearchService searchService) {
+    public RestaurantApiController(NativeWebRequest request, SearchService searchService, RestaurantService restaurantService) {
         this.request = request;
         this.searchService = searchService;
+        this.restaurantService = restaurantService;
     }
 
     @Override
@@ -35,5 +37,17 @@ public class RestaurantApiController implements RestaurantApi {
     public ResponseEntity<List<RestaurantEntity>> getFood(String search, String geolocation, String distance, String filterAllergens, String filterDietaryRestrictions, Integer stars, Integer page, Integer size) {
         // return RestaurantApi.super.getFood(search, geolocation, distance, filterAllergens, filterDietaryRestrictions, stars, page, size);
         return new ResponseEntity<List<RestaurantEntity>>(searchService.search(search, geolocation), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<RestaurantEntity> createRestaurant(RestaurantEntity restaurant) {
+        // return RestaurantApi.super.createRestaurant(restaurant);
+        return new ResponseEntity<RestaurantEntity>(restaurantService.addRestaurant(restaurant), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteRestaurant(Long id) {
+        restaurantService.deleteRestaurant(id);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }

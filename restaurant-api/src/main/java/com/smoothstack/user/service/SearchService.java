@@ -30,13 +30,18 @@ public class SearchService {
 
     public List<RestaurantEntity> search(String search, String geolocation) {
         String[] locations = geolocation.split(",");
-        Iterable<RestaurantEntity> restaurants = restaurantRepo.findAll();
+        List<RestaurantEntity> prime = restaurantRepo.searchRestaurantPrimary(search);
+        List<RestaurantEntity> second = restaurantRepo.searchRestaurantSecondary(search);
         ArrayList<RestaurantEntity> entities = new ArrayList<>();
-        for(RestaurantEntity restaurant : restaurants) {
-            if(calculateDistance(Double.parseDouble(locations[0]), Double.parseDouble(locations[1]),
-                                 restaurant.getCoordinates().getLatitude(), restaurant.getCoordinates().getLongitude()) < 25) {
-                entities.add(restaurant);
-            }
+        for(RestaurantEntity restaurant : prime) {
+//            if(calculateDistance(Double.parseDouble(locations[0]), Double.parseDouble(locations[1]),
+//                                 restaurant.getCoordinates().getLatitude(), restaurant.getCoordinates().getLongitude()) < 20) {
+//                entities.add(restaurant);
+//            }
+            entities.add(restaurant);
+        }
+        for(RestaurantEntity restaurant : second) {
+            entities.add(restaurant);
         }
         return entities;
     }

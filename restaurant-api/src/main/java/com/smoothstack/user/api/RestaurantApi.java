@@ -72,7 +72,7 @@ public interface RestaurantApi {
         produces = { "application/json", "application/xml" },
         consumes = { "application/json", "application/xml" }
     )
-    default ResponseEntity<Restaurant> createRestaurant(@ApiParam(value = "Restaurant object with null imageId's"  )  @Valid @RequestBody(required = false) Restaurant restaurant) {
+    default ResponseEntity<RestaurantEntity> createRestaurant(@ApiParam(value = "Restaurant object with null imageId's"  )  @Valid @RequestBody(required = false) RestaurantEntity restaurant) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -116,7 +116,7 @@ public interface RestaurantApi {
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<Void> deleteRestaurant(@ApiParam(value = "Restuarant id to delete"  )  @Valid @RequestBody(required = false) String body) {
+    default ResponseEntity<Void> deleteRestaurant(@ApiParam(value = "Restuarant id to delete"  )  @Valid @RequestBody(required = false) Long id) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

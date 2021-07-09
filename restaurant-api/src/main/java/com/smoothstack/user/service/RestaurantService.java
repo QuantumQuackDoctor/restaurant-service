@@ -1,6 +1,7 @@
 package com.smoothstack.user.service;
 
-import com.database.ormlibrary.food.RestaurantEntity;
+
+import com.database.ormlibrary.food.*;
 import com.smoothstack.user.model.Restaurant;
 import com.smoothstack.user.repo.RestaurantRepo;
 import org.springframework.stereotype.Service;
