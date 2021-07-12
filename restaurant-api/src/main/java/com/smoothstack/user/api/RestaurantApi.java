@@ -62,9 +62,9 @@ public interface RestaurantApi {
      *         or Access token is missing or invalid (status code 401)
      *         or Forbidden (status code 403)
      */
-    @ApiOperation(value = "Admin Create Restaurant", nickname = "createRestaurant", notes = "Create new restaurant, images to be uploaded at POST /restaurant/image", response = Restaurant.class, tags={ "food", })
+    @ApiOperation(value = "Admin Create Restaurant", nickname = "createRestaurant", notes = "Create new restaurant, images to be uploaded at POST /restaurant/image", response = RestaurantEntity.class, tags={ "food", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Returns restaurant with populated imageId's, upload images at ids with POST /restaurant/image/{id}", response = Restaurant.class),
+        @ApiResponse(code = 200, message = "Returns restaurant with populated imageId's, upload images at ids with POST /restaurant/image/{id}", response = RestaurantEntity.class),
         @ApiResponse(code = 401, message = "Access token is missing or invalid", response = String.class),
         @ApiResponse(code = 403, message = "Forbidden") })
     @PutMapping(
@@ -146,7 +146,7 @@ public interface RestaurantApi {
         value = "/restaurant",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<RestaurantEntity>> getFood(@NotNull @ApiParam(value = "Main search term", required = true) @Valid @RequestParam(value = "search", required = true) String search, @NotNull @ApiParam(value = "Location to search around", required = true) @Valid @RequestParam(value = "geolocation", required = true) String geolocation, @ApiParam(value = "distance from location, default <=20 miles") @Valid @RequestParam(value = "distance", required = false) String distance, @ApiParam(value = "comma separated list of allergens, exclude matches") @Valid @RequestParam(value = "filter-allergens", required = false) String filterAllergens, @ApiParam(value = "comma separated list of dietary restrictions, only show matches") @Valid @RequestParam(value = "filter-dietary-restrictions", required = false) String filterDietaryRestrictions, @ApiParam(value = ">= stars will be included") @Valid @RequestParam(value = "stars", required = false) Integer stars, @Min(0)@ApiParam(value = "page to return indexed by 0") @Valid @RequestParam(value = "page", required = false) Integer page, @Min(1)@ApiParam(value = "items in page") @Valid @RequestParam(value = "size", required = false) Integer size) {
+    default ResponseEntity<List<RestaurantEntity>> getFood(@NotNull @ApiParam(value = "Main search term", required = true) @Valid @RequestParam(value = "search", required = true) String search, @NotNull @ApiParam(value = "Location to search around", required = true) @Valid @RequestParam(value = "geolocation", required = true) String geolocation, @ApiParam(value = "distance from location, default <=20 miles") @Valid @RequestParam(value = "distance", required = false) String distance, @ApiParam(value = "type of sort") @Valid @RequestParam(value = "sort_type", required = false) String sortType, @ApiParam(value = "sort values") @Valid @RequestParam(value = "sort_values", required = false) String sortValue, @ApiParam(value = ">= stars will be included") @Valid @RequestParam(value = "stars", required = false) Integer stars, @ApiParam(value = "<= price will be included") @Valid @RequestParam(value = "price", required = false) Integer price, @Min(0)@ApiParam(value = "page to return indexed by 0") @Valid @RequestParam(value = "page", required = false) Integer page, @Min(1)@ApiParam(value = "items in page") @Valid @RequestParam(value = "size", required = false) Integer size) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

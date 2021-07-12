@@ -34,9 +34,9 @@ public class RestaurantApiController implements RestaurantApi {
     }
 
     @Override
-    public ResponseEntity<List<RestaurantEntity>> getFood(String search, String geolocation, String distance, String filterAllergens, String filterDietaryRestrictions, Integer stars, Integer page, Integer size) {
+    public ResponseEntity<List<RestaurantEntity>> getFood(String search, String geolocation, String distance, String sortType, String sortValue, Integer stars, Integer price, Integer page, Integer size) {
         // return RestaurantApi.super.getFood(search, geolocation, distance, filterAllergens, filterDietaryRestrictions, stars, page, size);
-        return new ResponseEntity<List<RestaurantEntity>>(searchService.search(search, geolocation), HttpStatus.OK);
+        return new ResponseEntity<List<RestaurantEntity>>(searchService.search(search, geolocation, sortType, sortValue, stars, price), HttpStatus.OK);
     }
 
     @Override
