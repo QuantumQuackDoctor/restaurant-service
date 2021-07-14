@@ -6,6 +6,7 @@
 package com.smoothstack.user.api;
 
 import com.database.ormlibrary.food.RestaurantEntity;
+import com.smoothstack.user.errors.InvalidSearchError;
 import com.smoothstack.user.model.Restaurant;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
@@ -135,6 +136,7 @@ public interface RestaurantApi {
      * @param page page to return indexed by 0 (optional)
      * @param size items in page (optional)
      * @return OK (status code 200)
+     * @throws InvalidSearchError 
      */
     @ApiOperation(value = "Search Restaurants", nickname = "getFood", notes = "Search food, matches to restaurant terms", response = Restaurant.class, responseContainer = "List", authorizations = {
         
@@ -146,7 +148,7 @@ public interface RestaurantApi {
         value = "/restaurant",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<RestaurantEntity>> getFood(@NotNull @ApiParam(value = "Main search term", required = true) @Valid @RequestParam(value = "search", required = true) String search, @NotNull @ApiParam(value = "Location to search around", required = true) @Valid @RequestParam(value = "geolocation", required = true) String geolocation, @ApiParam(value = "distance from location, default <=20 miles") @Valid @RequestParam(value = "distance", required = false) String distance, @ApiParam(value = "type of sort") @Valid @RequestParam(value = "sort_type", required = false) String sortType, @ApiParam(value = "sort values") @Valid @RequestParam(value = "sort_values", required = false) String sortValue, @ApiParam(value = ">= stars will be included") @Valid @RequestParam(value = "stars", required = false) Integer stars, @ApiParam(value = "<= price will be included") @Valid @RequestParam(value = "price", required = false) Integer price, @Min(0)@ApiParam(value = "page to return indexed by 0") @Valid @RequestParam(value = "page", required = false) Integer page, @Min(1)@ApiParam(value = "items in page") @Valid @RequestParam(value = "size", required = false) Integer size) {
+    default ResponseEntity<List<RestaurantEntity>> getFood(@NotNull @ApiParam(value = "Main search term", required = true) @Valid @RequestParam(value = "search", required = true) String search, @NotNull @ApiParam(value = "Location to search around", required = true) @Valid @RequestParam(value = "geolocation", required = true) String geolocation, @ApiParam(value = "distance from location, default <=20 miles") @Valid @RequestParam(value = "distance", required = false) String distance, @ApiParam(value = "type of sort") @Valid @RequestParam(value = "sort_type", required = false) String sortType, @ApiParam(value = "sort values") @Valid @RequestParam(value = "sort_values", required = false) String sortValue, @ApiParam(value = ">= stars will be included") @Valid @RequestParam(value = "stars", required = false) Integer stars, @ApiParam(value = "<= price will be included") @Valid @RequestParam(value = "price", required = false) Integer price, @Min(0)@ApiParam(value = "page to return indexed by 0") @Valid @RequestParam(value = "page", required = false) Integer page, @Min(1)@ApiParam(value = "items in page") @Valid @RequestParam(value = "size", required = false) Integer size) throws InvalidSearchError {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

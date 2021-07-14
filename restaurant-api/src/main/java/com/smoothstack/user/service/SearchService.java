@@ -1,6 +1,7 @@
 package com.smoothstack.user.service;
 
 import com.database.ormlibrary.food.RestaurantEntity;
+import com.smoothstack.user.errors.InvalidSearchError;
 import com.smoothstack.user.repo.RestaurantRepo;
 import org.hibernate.dialect.Database;
 import org.springframework.stereotype.Service;
@@ -55,7 +56,7 @@ public class SearchService {
     }
 
     public Boolean filterPrice(Integer price, Integer limit) {
-        if (price < limit) {
+        if (price <= limit) {
             return true;
         }
         else {
@@ -64,7 +65,7 @@ public class SearchService {
     }
 
     public Boolean filterStars(Integer star, Integer limit) {
-        if (star > limit) {
+        if (star >= limit) {
             return true;
         }
         else {
@@ -72,7 +73,9 @@ public class SearchService {
         }
     }
 
-    public List<RestaurantEntity> search(String search, String geolocation, String sortType, String sortValue, Integer stars, Integer price) {
+
+
+    public List<RestaurantEntity> search(String search, String geolocation, String sortType, String sortValue, Integer stars, Integer price) throws InvalidSearchError {
         String[] locations = geolocation.split(",");
         Iterable<RestaurantEntity> prime = restaurantRepo.searchRestaurantPrimary(search);
         Iterable<RestaurantEntity> second = restaurantRepo.searchRestaurantSecondary(search);
@@ -89,45 +92,70 @@ public class SearchService {
             entities.add(restaurant);
         }
 
-        if(stars != 0) {
-            entities = entities.stream().filter(r -> filterStars(r.getAverageRating(), stars)).collect(Collectors.toList());
-        }
-
-        if(price != 5) {
-            entities = entities.stream().filter(r -> filterPrice(r.getPriceRating(), price)).collect(Collectors.toList());
-        }
-
-        switch(sortType) {
-            case "stars":
-                if (sortValue == "high") {
-                    entities = entities.stream().sorted((x, y) -> sortStars(x.getAverageRating(), y.getAverageRating())).collect(Collectors.toList());
-                }
-                else {
-                    entities = entities.stream().sorted((x, y) -> sortStars(y.getAverageRating(), x.getAverageRating())).collect(Collectors.toList());
-                }
-                break;
-            case "price":
-                if (sortValue == "high") {
-                    entities = entities.stream().sorted((x, y) -> sortPrice(x.getPriceRating(), y.getPriceRating())).collect(Collectors.toList());
-                }
-                else {
-                    entities = entities.stream().sorted((x, y) -> sortPrice(y.getPriceRating(), x.getPriceRating())).collect(Collectors.toList());
-                }
-                break;
-            default:
-                break;
-        }
+        entities = sortFilterList(entities, sortType, sortValue, stars, price);
 
 
         return entities;
     }
 
-    public List<RestaurantEntity> search(String search, String geolocation) {
+    public List<RestaurantEntity> sortFilterList(List<RestaurantEntity> list, String sortType, String sortValue, Integer stars, Integer price) {
+
+        if(stars != 0) {
+            list = list.stream().filter(r -> filterStars(r.getAverageRating(), stars)).collect(Collectors.toList());
+        }
+
+        if(price != 5) {
+            list = list.stream().filter(r -> filterPrice(r.getPriceRating(), price)).collect(Collectors.toList());
+        }
+
+        switch(sortType) {
+            case "stars":
+                if (sortValue == "high") {
+                    list = list.stream().sorted((x, y) -> sortStars(y.getAverageRating(), x.getAverageRating())).collect(Collectors.toList());
+                }
+                else {
+                    list = list.stream().sorted((x, y) -> sortStars(x.getAverageRating(), y.getAverageRating())).collect(Collectors.toList());
+                }
+                break;
+            case "price":
+                if (sortValue == "high") {
+                    list = list.stream().sorted((x, y) -> sortPrice(y.getPriceRating(), x.getPriceRating())).collect(Collectors.toList());
+                }
+                else {
+                    list = list.stream().sorted((x, y) -> sortPrice(x.getPriceRating(), y.getPriceRating())).collect(Collectors.toList());
+                }
+                break;
+            default:
+                break;
+        }
+        return list;
+    }
+
+    public List<RestaurantEntity> search(String search, String geolocation) throws InvalidSearchError {
         String[] locations = geolocation.split(",");
+        
+        List<RestaurantEntity> entities = new ArrayList<>();
+        
+        if(locations.length != 2) {
+        	throw new InvalidSearchError("Location not specified");
+        }
+        
+        if(search == "") {
+        	Iterable<RestaurantEntity> all = restaurantRepo.findAll();
+        	
+        	for(RestaurantEntity one : all) {
+        		entities.add(one);
+        	}
+        	
+        	return entities;
+        }
+        
         Iterable<RestaurantEntity> prime = restaurantRepo.searchRestaurantPrimary(search);
         Iterable<RestaurantEntity> second = restaurantRepo.searchRestaurantSecondary(search);
+        
+        
 
-        List<RestaurantEntity> entities = new ArrayList<>();
+        
         for(RestaurantEntity restaurant : prime) {
 //            if(calculateDistance(Double.parseDouble(locations[0]), Double.parseDouble(locations[1]),
 //                                 restaurant.getCoordinates().getLatitude(), restaurant.getCoordinates().getLongitude()) < 20) {

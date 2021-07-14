@@ -22,6 +22,10 @@ public class RestaurantService {
 
         return restaurant;
     }
+    
+    public RestaurantEntity getRestaurantById(Long id) {
+		return restaurantRepo.findById(id).get();
+    }
 
     public void deleteRestaurant(Long id) {
         restaurantRepo.deleteById(id);
