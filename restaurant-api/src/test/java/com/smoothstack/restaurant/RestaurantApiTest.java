@@ -9,12 +9,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import com.smoothstack.user.errors.InvalidSearchError;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.database.ormlibrary.CoordinatesEmbeddable;
@@ -33,22 +36,26 @@ class RestaurantApiTest {
 	RestaurantRepo restaurantRepo;
 	@Autowired
 	RestaurantService restaurantService;
-	@Autowired
+	@MockBean
 	SearchService searchService;
 	@Autowired
 	MockMvc mockMvc;
 
 	ObjectMapper mapper = new ObjectMapper();
 
+	@BeforeEach
+	void setup() throws InvalidSearchError {
+		RestaurantEntity restaurantEntity = getTestEntity(1L);
+		List<RestaurantEntity> list = new ArrayList<>();
+		list.add(restaurantEntity);
+		// Return the list of one restaurant when one is searched
+		when(searchService.search("food", "0.0,0.0")).thenReturn(list);
+	}
+
 	@Test
 	void testRestaurantApi() throws Exception {
 		// Initialize a test entity
 		RestaurantEntity restaurantEntity = getTestEntity(1L);
-		List<RestaurantEntity> list = new ArrayList<>();
-		list.add(restaurantEntity);
-
-		// Return the list of one restaurant when one is searched
-		when(searchService.search("food", "0.0,0.0")).thenReturn(list);
 
 		// Insert a Restaurant
 		mockMvc.perform(put("/restaurant").content(mapper.writeValueAsString(restaurantEntity))
@@ -65,6 +72,15 @@ class RestaurantApiTest {
 		mockMvc.perform(delete("/restaurant").content("1").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 
+	}
+
+	@Test
+    @WithMockUser(roles = "user")
+	void RestaurantSearch_ShouldReturnRestaurants() throws Exception {
+
+		// Search with valid or invalid requests
+		mockMvc.perform(get("/restaurants").param("search", "food").param("geolocation", "0.0,0.0"))
+				.andExpect(status().isOk());
 	}
 
 	public RestaurantEntity getTestEntity(Long id) {

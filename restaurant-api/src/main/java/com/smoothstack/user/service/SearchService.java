@@ -1,11 +1,12 @@
 package com.smoothstack.user.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.smoothstack.user.model.Restaurant;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.database.ormlibrary.food.RestaurantEntity;
@@ -16,9 +17,11 @@ import com.smoothstack.user.repo.RestaurantRepo;
 public class SearchService {
 
 	private final RestaurantRepo restaurantRepo;
+	private final ModelMapper modelMapper;
 
-	public SearchService(RestaurantRepo restaurantRepo) {
+	public SearchService(RestaurantRepo restaurantRepo, ModelMapper modelMapper) {
 		this.restaurantRepo = restaurantRepo;
+		this.modelMapper = modelMapper;
 	}
 
 	public Double calculateDistance(Double lat1, Double lon1, Double lat2, Double lon2) {
@@ -87,8 +90,8 @@ public class SearchService {
 		}
 	}
 
-	public List<RestaurantEntity> search(String search, String geolocation, String sortType, String sortValue,
-			Integer stars, Integer price) throws InvalidSearchError {
+	public List<Restaurant> search(String search, String geolocation, String sortType, String sortValue,
+								   Integer stars, Integer price) throws InvalidSearchError {
 		String[] locations = geolocation.split(",");
 		Iterable<RestaurantEntity> prime = restaurantRepo.searchRestaurantPrimary(search);
 		Iterable<RestaurantEntity> second = restaurantRepo.searchRestaurantSecondary(search);
@@ -104,20 +107,31 @@ public class SearchService {
 
 		entities = sortFilterList(entities, sortType, sortValue, stars, price);
 
-		return entities;
+
+		return entities.stream().map(this::convertToDTO).collect(Collectors.toList());
+	}
+
+	public Restaurant convertToDTO(RestaurantEntity entity){
+		Restaurant restaurant = modelMapper.map(entity, Restaurant.class);
+		//create a list of menu item dtos
+//		entity.getMenu().forEach(() => {
+//			//add to list
+//		});
+		//set list
+		return restaurant;
 	}
 
 	public List<RestaurantEntity> sortFilterList(List<RestaurantEntity> list, String sortType, String sortValue,
 			Integer stars, Integer price) {
-		if (stars != 0) {
+		if (stars != null && stars != 0) {
 			list = list.stream().filter(r -> filterStars(r.getAverageRating(), stars)).collect(Collectors.toList());
 		}
 
-		if (price != 5) {
+		if (price != null && price != 5) {
 			list = list.stream().filter(r -> filterPrice(r.getPriceRating(), price)).collect(Collectors.toList());
 		}
 
-		switch (sortType) {
+		switch (sortType != null? sortType : "") {
 		case "stars":
 			if ("high".equals(sortValue)) {
 				list = list.stream().sorted((x, y) -> sortStars(y.getAverageRating(), x.getAverageRating()))
@@ -164,7 +178,7 @@ public class SearchService {
 			throw new InvalidSearchError("Location not specified");
 		}
 
-		if (search == "") {
+		if (search.equals("")) {
 			Iterable<RestaurantEntity> all = restaurantRepo.findAll();
 
 			for (RestaurantEntity one : all) {

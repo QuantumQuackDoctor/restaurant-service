@@ -11,7 +11,6 @@ import javax.validation.constraints.*;
 /**
  * Restaurant
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-30T22:10:31.533216200-06:00[America/Denver]")
 public class Restaurant   {
   @JsonProperty("id")
   private String id;
