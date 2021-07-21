@@ -5,22 +5,39 @@
  */
 package com.smoothstack.user.api;
 
-import com.database.ormlibrary.food.RestaurantEntity;
-import com.smoothstack.user.errors.InvalidSearchError;
-import com.smoothstack.user.model.Restaurant;
-import io.swagger.annotations.*;
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.List;
-import java.util.Optional;
+import com.database.ormlibrary.food.RestaurantEntity;
+import com.smoothstack.user.errors.InvalidSearchError;
+import com.smoothstack.user.model.Restaurant;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-30T22:10:31.533216200-06:00[America/Denver]")
 @Validated
 @Api(value = "restaurant", description = "the restaurant API")
@@ -45,7 +62,7 @@ public interface RestaurantApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Image uploaded") })
     @PostMapping(
-        value = "/restaurant/image/{imageId}",
+        value = "/restaurants/image/{imageId}",
         consumes = { "multipart/form-data" }
     )
     default ResponseEntity<Void> adminUploadImage(@ApiParam(value = "",required=true) @PathVariable("imageId") String imageId,@ApiParam(value = "") @Valid @RequestPart(value = "image", required = false) MultipartFile image) {
@@ -69,7 +86,7 @@ public interface RestaurantApi {
         @ApiResponse(code = 401, message = "Access token is missing or invalid", response = String.class),
         @ApiResponse(code = 403, message = "Forbidden") })
     @PutMapping(
-        value = "/restaurant",
+        value = "/restaurants",
         produces = { "application/json", "application/xml" },
         consumes = { "application/json", "application/xml" }
     )
@@ -113,7 +130,7 @@ public interface RestaurantApi {
         @ApiResponse(code = 403, message = "Forbidden"),
         @ApiResponse(code = 404, message = "Not Found") })
     @DeleteMapping(
-        value = "/restaurant",
+        value = "/restaurants",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
@@ -124,20 +141,22 @@ public interface RestaurantApi {
 
 
     /**
-     * GET /restaurant : Search Restaurants
-     * Search food, matches to restaurant terms
-     *
-     * @param search Main search term (required)
-     * @param geolocation Location to search around (required)
-     * @param distance distance from location, default &lt;&#x3D;20 miles (optional)
-     * @param filterAllergens comma separated list of allergens, exclude matches (optional)
-     * @param filterDietaryRestrictions comma separated list of dietary restrictions, only show matches (optional)
-     * @param stars &gt;&#x3D; stars will be included (optional)
-     * @param page page to return indexed by 0 (optional)
-     * @param size items in page (optional)
-     * @return OK (status code 200)
-     * @throws InvalidSearchError 
-     */
+	 * GET /restaurant : Search Restaurants Search food, matches to restaurant terms
+	 *
+	 * @param search                    Main search term (required)
+	 * @param geolocation               Location to search around (required)
+	 * @param distance                  distance from location, default &lt;&#x3D;20
+	 *                                  miles (optional)
+	 * @param filterAllergens           comma separated list of allergens, exclude
+	 *                                  matches (optional)
+	 * @param filterDietaryRestrictions comma separated list of dietary
+	 *                                  restrictions, only show matches (optional)
+	 * @param stars                     &gt;&#x3D; stars will be included (optional)
+	 * @param page                      page to return indexed by 0 (optional)
+	 * @param size                      items in page (optional)
+	 * @return OK (status code 200)
+	 * @throws InvalidSearchError
+	 */
     @ApiOperation(value = "Search Restaurants", nickname = "getFood", notes = "Search food, matches to restaurant terms", response = Restaurant.class, responseContainer = "List", authorizations = {
         
         @Authorization(value = "JWT")
@@ -145,10 +164,10 @@ public interface RestaurantApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = Restaurant.class, responseContainer = "List") })
     @GetMapping(
-        value = "/restaurant",
+        value = "/restaurants",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<RestaurantEntity>> getFood(@NotNull @ApiParam(value = "Main search term", required = true) @Valid @RequestParam(value = "search", required = true) String search, @NotNull @ApiParam(value = "Location to search around", required = true) @Valid @RequestParam(value = "geolocation", required = true) String geolocation, @ApiParam(value = "distance from location, default <=20 miles") @Valid @RequestParam(value = "distance", required = false) String distance, @ApiParam(value = "type of sort") @Valid @RequestParam(value = "sort_type", required = false) String sortType, @ApiParam(value = "sort values") @Valid @RequestParam(value = "sort_values", required = false) String sortValue, @ApiParam(value = ">= stars will be included") @Valid @RequestParam(value = "stars", required = false) Integer stars, @ApiParam(value = "<= price will be included") @Valid @RequestParam(value = "price", required = false) Integer price, @Min(0)@ApiParam(value = "page to return indexed by 0") @Valid @RequestParam(value = "page", required = false) Integer page, @Min(1)@ApiParam(value = "items in page") @Valid @RequestParam(value = "size", required = false) Integer size) throws InvalidSearchError {
+    default ResponseEntity<List<RestaurantEntity>> getFood(@NotNull @ApiParam(value = "Main search term", required = true) @Valid @RequestParam(value = "search", required = true) String search, @NotNull @ApiParam(value = "Location to search around", required = true) @Valid @RequestParam(value = "geolocation", required = true) String geolocation, @ApiParam(value = "type of sort") @Valid @RequestParam(value = "sort_type", required = false) String sortType, @ApiParam(value = "sort values") @Valid @RequestParam(value = "sort_values", required = false) String sortValue, @ApiParam(value = ">= stars will be included") @Valid @RequestParam(value = "stars", required = false) Integer stars, @ApiParam(value = "<= price will be included") @Valid @RequestParam(value = "price", required = false) Integer price, @Min(0)@ApiParam(value = "page to return indexed by 0") @Valid @RequestParam(value = "page", required = false) Integer page, @Min(1)@ApiParam(value = "items in page") @Valid @RequestParam(value = "size", required = false) Integer size) throws InvalidSearchError {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -177,7 +196,7 @@ public interface RestaurantApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Returns requested image", response = org.springframework.web.multipart.MultipartFile.class) })
     @GetMapping(
-        value = "/restaurant/image/{imageId}",
+        value = "/restaurants/image/{imageId}",
         produces = { "image/_*" }
     )
     default ResponseEntity<org.springframework.web.multipart.MultipartFile> getRestaurantImage(@ApiParam(value = "",required=true) @PathVariable("imageId") String imageId) {
@@ -211,7 +230,7 @@ public interface RestaurantApi {
         @ApiResponse(code = 403, message = "Forbidden"),
         @ApiResponse(code = 404, message = "Restaurant not found") })
     @PutMapping(
-        value = "/restaurant/rating/{restaurantId}",
+        value = "/restaurants/rating/{restaurantId}",
         produces = { "application/json" },
         consumes = { "multipart/form-data" }
     )
@@ -241,7 +260,7 @@ public interface RestaurantApi {
         @ApiResponse(code = 403, message = "Forbidden"),
         @ApiResponse(code = 404, message = "Not Found") })
     @PatchMapping(
-        value = "/restaurant",
+        value = "/restaurants",
         produces = { "application/json" },
         consumes = { "application/json", "application/xml" }
     )
