@@ -58,18 +58,15 @@ class RestaurantApiTest {
 		RestaurantEntity restaurantEntity = getTestEntity(1L);
 
 		// Insert a Restaurant
-		mockMvc.perform(put("/restaurant").content(mapper.writeValueAsString(restaurantEntity))
+		mockMvc.perform(put("/restaurants").content(mapper.writeValueAsString(restaurantEntity))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
-		// Search with valid or invalid requests
-		mockMvc.perform(get("/restaurant").param("search", "food").param("geolocation", "0.0,0.0"))
-				.andExpect(status().isOk());
 
-		mockMvc.perform(get("/restaurant").param("search", "food").param("geolocation", "0.0"))
+		mockMvc.perform(get("/restaurants").param("search", "food").param("geolocation", "0.0"))
 				.andExpect(status().isBadRequest());
 
 		// Delete a Restaurant
-		mockMvc.perform(delete("/restaurant").content("1").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(delete("/restaurants").content("1").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 
 	}
