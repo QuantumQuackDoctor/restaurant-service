@@ -62,7 +62,8 @@ public class RestaurantApiController {
 		// return RestaurantApi.super.getFood(search, geolocation, distance,
 		// filterAllergens, filterDietaryRestrictions, stars, page, size);
 
-		return new ResponseEntity<List<Restaurant>>(searchService.search(search, geolocation, sortType, sortValue, stars, price), HttpStatus.OK);
+		return new ResponseEntity<List<Restaurant>>(searchService.search(search, geolocation, sortType, sortValue, stars, price, page, size), HttpStatus.OK);
+//		return new ResponseEntity<List<Restaurant>>(searchService.search(search, geolocation, sortType, sortValue, stars, price), HttpStatus.OK);
 	}
 
 	@ExceptionHandler(InvalidSearchError.class)

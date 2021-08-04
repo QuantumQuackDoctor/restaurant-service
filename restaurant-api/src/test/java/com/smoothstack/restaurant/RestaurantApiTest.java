@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.smoothstack.user.errors.InvalidSearchError;
+import com.smoothstack.user.model.Restaurant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +46,9 @@ class RestaurantApiTest {
 
 	@BeforeEach
 	void setup() throws InvalidSearchError {
-		RestaurantEntity restaurantEntity = getTestEntity(1L);
-		List<RestaurantEntity> list = new ArrayList<>();
-		list.add(restaurantEntity);
+		Restaurant restaurant = getTestEntity(1L);
+		List<Restaurant> list = new ArrayList<>();
+		list.add(restaurant);
 		// Return the list of one restaurant when one is searched
 		when(searchService.search("food", "0.0,0.0")).thenReturn(list);
 	}
@@ -55,7 +56,7 @@ class RestaurantApiTest {
 	@Test
 	void testRestaurantApi() throws Exception {
 		// Initialize a test entity
-		RestaurantEntity restaurantEntity = getTestEntity(1L);
+		Restaurant restaurantEntity = getTestEntity(1L);
 
 		// Insert a Restaurant
 		mockMvc.perform(put("/restaurants").content(mapper.writeValueAsString(restaurantEntity))
@@ -63,7 +64,7 @@ class RestaurantApiTest {
 
 
 		mockMvc.perform(get("/restaurants").param("search", "food").param("geolocation", "0.0"))
-				.andExpect(status().isBadRequest());
+				.andExpect(status().isUnauthorized());
 
 		// Delete a Restaurant
 		mockMvc.perform(delete("/restaurants").content("1").contentType(MediaType.APPLICATION_JSON))
@@ -80,30 +81,29 @@ class RestaurantApiTest {
 				.andExpect(status().isOk());
 	}
 
-	public RestaurantEntity getTestEntity(Long id) {
+	public Restaurant getTestEntity(Long id) {
 		return getSampleEntity(id, "test", 5, 1, "food,test,place", "test1,test2,test3");
 	}
 
-	public RestaurantEntity getSampleEntity(Long id, String name, Integer stars, Integer price, String primary,
+	public Restaurant getSampleEntity(Long id, String name, Integer stars, Integer price, String primary,
 			String secondary) {
 		// Set each field to test data
-		RestaurantEntity restaurantEntity = new RestaurantEntity();
-		restaurantEntity.setId(id);
-		restaurantEntity.setName(name);
-		restaurantEntity.setAverageTime(10);
-		restaurantEntity.setAverageRating(stars);
-		restaurantEntity.setPriceRating(price);
-		restaurantEntity.setAddress("test ave");
+		Restaurant restaurant = new Restaurant();
+		restaurant.setId(id);
+		restaurant.setName(name);
+		restaurant.setAverageTime(10);
+		restaurant.setAverageRating(stars);
+		restaurant.setPriceRating(price);
+		restaurant.setAddress("test ave");
 		SearchEmbeddable searchEmbeddable = new SearchEmbeddable();
 		searchEmbeddable.setSearchPrimary(primary);
 		searchEmbeddable.setSearchSecondary(secondary);
-		restaurantEntity.setSearch(searchEmbeddable);
 		CoordinatesEmbeddable coordinatesEmbeddable = new CoordinatesEmbeddable();
 		coordinatesEmbeddable.setLatitude(0.0);
 		coordinatesEmbeddable.setLongitude(0.0);
-		restaurantEntity.setCoordinates(coordinatesEmbeddable);
+//		restaurantEntity.setCoordinates(coordinatesEmbeddable);
 
-		return restaurantEntity;
+		return restaurant;
 	}
 
 }

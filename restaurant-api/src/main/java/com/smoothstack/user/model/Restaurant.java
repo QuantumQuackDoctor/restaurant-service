@@ -13,13 +13,13 @@ import javax.validation.constraints.*;
  */
 public class Restaurant   {
   @JsonProperty("id")
-  private String id;
+  private Long id;
 
   @JsonProperty("name")
   private String name;
 
   @JsonProperty("iconId")
-  private org.springframework.web.multipart.MultipartFile iconId;
+  private String iconId;
 
   @JsonProperty("backgroundId")
   private String backgroundId;
@@ -36,8 +36,8 @@ public class Restaurant   {
   @Valid
   private List<RestaurantRatings> ratings = null;
 
-  @JsonProperty("rating")
-  private Integer rating;
+  @JsonProperty("averageRating")
+  private Integer averageRating;
 
   @JsonProperty("averageTime")
   private Integer averageTime;
@@ -54,7 +54,7 @@ public class Restaurant   {
   @JsonProperty("hours")
   private RestaurantHours hours;
 
-  public Restaurant id(String id) {
+  public Restaurant id(Long id) {
     this.id = id;
     return this;
   }
@@ -66,11 +66,11 @@ public class Restaurant   {
   @ApiModelProperty(value = "")
 
 
-  public String getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(long id) {
     this.id = id;
   }
 
@@ -94,7 +94,7 @@ public class Restaurant   {
     this.name = name;
   }
 
-  public Restaurant iconId(org.springframework.web.multipart.MultipartFile iconId) {
+  public Restaurant iconId(String iconId) {
     this.iconId = iconId;
     return this;
   }
@@ -107,11 +107,11 @@ public class Restaurant   {
 
   @Valid
 
-  public org.springframework.web.multipart.MultipartFile getIconId() {
+  public String getIconId() {
     return iconId;
   }
 
-  public void setIconId(org.springframework.web.multipart.MultipartFile iconId) {
+  public void setIconId(String iconId) {
     this.iconId = iconId;
   }
 
@@ -222,8 +222,8 @@ public class Restaurant   {
     this.ratings = ratings;
   }
 
-  public Restaurant rating(Integer rating) {
-    this.rating = rating;
+  public Restaurant averageRating(Integer averageRating) {
+    this.averageRating = averageRating;
     return this;
   }
 
@@ -236,12 +236,12 @@ public class Restaurant   {
   @ApiModelProperty(value = "")
 
 @Min(1) @Max(5) 
-  public Integer getRating() {
-    return rating;
+  public Integer getAverageRating() {
+    return averageRating;
   }
 
-  public void setRating(Integer rating) {
-    this.rating = rating;
+  public void setAverageRating(Integer averageRating) {
+    this.averageRating = averageRating;
   }
 
   public Restaurant averageTime(Integer averageTime) {
@@ -364,7 +364,7 @@ public class Restaurant   {
         Objects.equals(this.menu, restaurant.menu) &&
         Objects.equals(this.promotions, restaurant.promotions) &&
         Objects.equals(this.ratings, restaurant.ratings) &&
-        Objects.equals(this.rating, restaurant.rating) &&
+        Objects.equals(this.averageRating, restaurant.averageRating) &&
         Objects.equals(this.averageTime, restaurant.averageTime) &&
         Objects.equals(this.priceRating, restaurant.priceRating) &&
         Objects.equals(this.geolocation, restaurant.geolocation) &&
@@ -374,7 +374,7 @@ public class Restaurant   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, iconId, backgroundId, menu, promotions, ratings, rating, averageTime, priceRating, geolocation, address, hours);
+    return Objects.hash(id, name, iconId, backgroundId, menu, promotions, ratings, averageRating, averageTime, priceRating, geolocation, address, hours);
   }
 
   @Override
@@ -389,7 +389,7 @@ public class Restaurant   {
     sb.append("    menu: ").append(toIndentedString(menu)).append("\n");
     sb.append("    promotions: ").append(toIndentedString(promotions)).append("\n");
     sb.append("    ratings: ").append(toIndentedString(ratings)).append("\n");
-    sb.append("    rating: ").append(toIndentedString(rating)).append("\n");
+    sb.append("    rating: ").append(toIndentedString(averageRating)).append("\n");
     sb.append("    averageTime: ").append(toIndentedString(averageTime)).append("\n");
     sb.append("    priceRating: ").append(toIndentedString(priceRating)).append("\n");
     sb.append("    geolocation: ").append(toIndentedString(geolocation)).append("\n");

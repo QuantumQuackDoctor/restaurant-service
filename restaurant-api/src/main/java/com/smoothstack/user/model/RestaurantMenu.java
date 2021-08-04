@@ -16,13 +16,16 @@ public class RestaurantMenu   {
   private String name;
 
   @JsonProperty("imgPath")
-  private String imgPath;
+  private String imageId;
 
   @JsonProperty("allergens")
   private String allergens;
 
-  @JsonProperty("dietaryRestrictions")
-  private String dietaryRestrictions;
+  @JsonProperty("price")
+  private Float price;
+
+  @JsonProperty("description")
+  private String description;
 
   @JsonProperty("configurations")
   @Valid
@@ -48,24 +51,24 @@ public class RestaurantMenu   {
     this.name = name;
   }
 
-  public RestaurantMenu imgPath(String imgPath) {
-    this.imgPath = imgPath;
+  public RestaurantMenu imageId(String imageId) {
+    this.imageId = imageId;
     return this;
   }
 
   /**
-   * Get imgPath
-   * @return imgPath
+   * Get imageId
+   * @return imageId
   */
   @ApiModelProperty(value = "")
 
 
-  public String getImgPath() {
-    return imgPath;
+  public String getImageId() {
+    return imageId;
   }
 
-  public void setImgPath(String imgPath) {
-    this.imgPath = imgPath;
+  public void setImageId(String imageId) {
+    this.imageId = imageId;
   }
 
   public RestaurantMenu allergens(String allergens) {
@@ -88,24 +91,42 @@ public class RestaurantMenu   {
     this.allergens = allergens;
   }
 
-  public RestaurantMenu dietaryRestrictions(String dietaryRestrictions) {
-    this.dietaryRestrictions = dietaryRestrictions;
+  public RestaurantMenu price(Float price) {
+    this.price = price;
     return this;
   }
 
   /**
-   * Get dietaryRestrictions
-   * @return dietaryRestrictions
-  */
+   * Get price
+   * @return price
+   */
   @ApiModelProperty(value = "")
 
-
-  public String getDietaryRestrictions() {
-    return dietaryRestrictions;
+  public Float getPrice() {
+    return price;
   }
 
-  public void setDietaryRestrictions(String dietaryRestrictions) {
-    this.dietaryRestrictions = dietaryRestrictions;
+  public void setPrice(Float price) {
+    this.price = price;
+  }
+
+  public RestaurantMenu description(String description) {
+    this.description = description;
+    return this;
+  }
+
+  /**
+   * Get description
+   * @return description
+   */
+  @ApiModelProperty(value = "")
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public RestaurantMenu configurations(List<String> configurations) {
@@ -147,15 +168,14 @@ public class RestaurantMenu   {
     }
     RestaurantMenu restaurantMenu = (RestaurantMenu) o;
     return Objects.equals(this.name, restaurantMenu.name) &&
-        Objects.equals(this.imgPath, restaurantMenu.imgPath) &&
+        Objects.equals(this.imageId, restaurantMenu.imageId) &&
         Objects.equals(this.allergens, restaurantMenu.allergens) &&
-        Objects.equals(this.dietaryRestrictions, restaurantMenu.dietaryRestrictions) &&
         Objects.equals(this.configurations, restaurantMenu.configurations);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, imgPath, allergens, dietaryRestrictions, configurations);
+    return Objects.hash(name, imageId, allergens, configurations);
   }
 
   @Override
@@ -164,9 +184,8 @@ public class RestaurantMenu   {
     sb.append("class RestaurantMenu {\n");
     
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    imgPath: ").append(toIndentedString(imgPath)).append("\n");
+    sb.append("    imgPath: ").append(toIndentedString(imageId)).append("\n");
     sb.append("    allergens: ").append(toIndentedString(allergens)).append("\n");
-    sb.append("    dietaryRestrictions: ").append(toIndentedString(dietaryRestrictions)).append("\n");
     sb.append("    configurations: ").append(toIndentedString(configurations)).append("\n");
     sb.append("}");
     return sb.toString();
