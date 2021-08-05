@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-30T22:10:31.533216200-06:00[America/Denver]")
 public class RestaurantRatings   {
   @JsonProperty("image")
-  private String image;
+  private String imageId;
 
   @JsonProperty("stars")
   private Integer stars;
@@ -20,8 +20,8 @@ public class RestaurantRatings   {
   @JsonProperty("description")
   private String description;
 
-  public RestaurantRatings image(String image) {
-    this.image = image;
+  public RestaurantRatings image(String imageId) {
+    this.imageId = imageId;
     return this;
   }
 
@@ -32,12 +32,12 @@ public class RestaurantRatings   {
   @ApiModelProperty(value = "filepath")
 
 
-  public String getImage() {
-    return image;
+  public String getImageId() {
+    return imageId;
   }
 
-  public void setImage(String image) {
-    this.image = image;
+  public void setImageId(String imageId) {
+    this.imageId = imageId;
   }
 
   public RestaurantRatings stars(Integer stars) {
@@ -92,14 +92,14 @@ public class RestaurantRatings   {
       return false;
     }
     RestaurantRatings restaurantRatings = (RestaurantRatings) o;
-    return Objects.equals(this.image, restaurantRatings.image) &&
+    return Objects.equals(this.imageId, restaurantRatings.imageId) &&
         Objects.equals(this.stars, restaurantRatings.stars) &&
         Objects.equals(this.description, restaurantRatings.description);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(image, stars, description);
+    return Objects.hash(imageId, stars, description);
   }
 
   @Override
@@ -107,7 +107,7 @@ public class RestaurantRatings   {
     StringBuilder sb = new StringBuilder();
     sb.append("class RestaurantRatings {\n");
     
-    sb.append("    image: ").append(toIndentedString(image)).append("\n");
+    sb.append("    image: ").append(toIndentedString(imageId)).append("\n");
     sb.append("    stars: ").append(toIndentedString(stars)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("}");

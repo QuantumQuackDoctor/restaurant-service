@@ -12,27 +12,27 @@ import javax.validation.Valid;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-30T22:10:31.533216200-06:00[America/Denver]")
 public class RestaurantHours   {
   @JsonProperty("MON")
-  private Day MON;
+  private String MON;
 
   @JsonProperty("TUE")
-  private Day TUE;
+  private String TUE;
 
   @JsonProperty("WED")
-  private Day WED;
+  private String WED;
 
   @JsonProperty("THU")
-  private Day THU;
+  private String THU;
 
   @JsonProperty("FRI")
-  private Day FRI;
+  private String FRI;
 
   @JsonProperty("SAT")
-  private Day SAT;
+  private String SAT;
 
   @JsonProperty("SUN")
-  private Day SUN;
+  private String SUN;
 
-  public RestaurantHours MON(Day MON) {
+  public RestaurantHours MON(String MON) {
     this.MON = MON;
     return this;
   }
@@ -45,15 +45,15 @@ public class RestaurantHours   {
 
   @Valid
 
-  public Day getMON() {
+  public String getMON() {
     return MON;
   }
 
-  public void setMON(Day MON) {
+  public void setMON(String MON) {
     this.MON = MON;
   }
 
-  public RestaurantHours TUE(Day TUE) {
+  public RestaurantHours TUE(String TUE) {
     this.TUE = TUE;
     return this;
   }
@@ -66,15 +66,15 @@ public class RestaurantHours   {
 
   @Valid
 
-  public Day getTUE() {
+  public String getTUE() {
     return TUE;
   }
 
-  public void setTUE(Day TUE) {
+  public void setTUE(String TUE) {
     this.TUE = TUE;
   }
 
-  public RestaurantHours WED(Day WED) {
+  public RestaurantHours WED(String WED) {
     this.WED = WED;
     return this;
   }
@@ -87,15 +87,15 @@ public class RestaurantHours   {
 
   @Valid
 
-  public Day getWED() {
+  public String getWED() {
     return WED;
   }
 
-  public void setWED(Day WED) {
+  public void setWED(String WED) {
     this.WED = WED;
   }
 
-  public RestaurantHours THU(Day THU) {
+  public RestaurantHours THU(String THU) {
     this.THU = THU;
     return this;
   }
@@ -108,15 +108,15 @@ public class RestaurantHours   {
 
   @Valid
 
-  public Day getTHU() {
+  public String getTHU() {
     return THU;
   }
 
-  public void setTHU(Day THU) {
+  public void setTHU(String THU) {
     this.THU = THU;
   }
 
-  public RestaurantHours FRI(Day FRI) {
+  public RestaurantHours FRI(String FRI) {
     this.FRI = FRI;
     return this;
   }
@@ -129,15 +129,15 @@ public class RestaurantHours   {
 
   @Valid
 
-  public Day getFRI() {
+  public String getFRI() {
     return FRI;
   }
 
-  public void setFRI(Day FRI) {
+  public void setFRI(String FRI) {
     this.FRI = FRI;
   }
 
-  public RestaurantHours SAT(Day SAT) {
+  public RestaurantHours SAT(String SAT) {
     this.SAT = SAT;
     return this;
   }
@@ -150,15 +150,15 @@ public class RestaurantHours   {
 
   @Valid
 
-  public Day getSAT() {
+  public String getSAT() {
     return SAT;
   }
 
-  public void setSAT(Day SAT) {
+  public void setSAT(String SAT) {
     this.SAT = SAT;
   }
 
-  public RestaurantHours SUN(Day SUN) {
+  public RestaurantHours SUN(String SUN) {
     this.SUN = SUN;
     return this;
   }
@@ -171,11 +171,11 @@ public class RestaurantHours   {
 
   @Valid
 
-  public Day getSUN() {
+  public String getSUN() {
     return SUN;
   }
 
-  public void setSUN(Day SUN) {
+  public void setSUN(String SUN) {
     this.SUN = SUN;
   }
 

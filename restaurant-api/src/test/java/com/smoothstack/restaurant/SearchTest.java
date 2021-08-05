@@ -13,6 +13,7 @@ import com.database.ormlibrary.food.RestaurantEntity;
 import com.smoothstack.user.OpenAPI2SpringBoot;
 import com.smoothstack.user.service.RestaurantService;
 import com.smoothstack.user.service.SearchService;
+import org.springframework.security.test.context.support.WithMockUser;
 
 @SpringBootTest(classes = { OpenAPI2SpringBoot.class })
 public class SearchTest {
@@ -101,7 +102,7 @@ public class SearchTest {
 		CoordinatesEmbeddable coordinatesEmbeddable = new CoordinatesEmbeddable();
 		coordinatesEmbeddable.setLatitude(0.0);
 		coordinatesEmbeddable.setLongitude(0.0);
-		restaurantEntity.setCoordinates(coordinatesEmbeddable);
+//		restaurantEntity.setCoordinates(coordinatesEmbeddable);
 
 		return restaurantEntity;
 	}
