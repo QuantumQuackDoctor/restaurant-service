@@ -1,5 +1,14 @@
+   def getDockerTag() {
+        def tag = sh script: 'git rev-parse HEAD', returnStdout: true
+        return tag
+    }
+
+
 pipeline {
     agent any
+    environment{
+	    Docker_tag = getDockerTag()
+    }
     stages {
         stage('git') {
             steps {
@@ -31,14 +40,19 @@ pipeline {
 
         stage('package') {
             steps {
-                echo "package"
-                //sh "mvn clean test"
+                sh "mvn clean package"
             }
         }
         stage('docker') {
-            steps {
-                echo "docker"
-                //sh "mvn clean test"
+            steps{
+                script {
+                    sh 'cp -r /var/lib/jenkins/workspace/restaurant-service-job/restaurant-api/target .'
+                    sh 'docker build . -t quangmtran36/qqd-restaurant-service:$Docker_tag'
+                    withCredentials([string(credentialsId: '6b6d3ec6-97dc-4c1c-bf02-67afd00371dc', variable: 'dockerHubPwd')]) {
+                        sh 'docker login -u quangmtran36 -p ${dockerHubPwd}'
+                        sh 'docker push quangmtran36/qqd-restaurant-service:$Docker_tag'                 
+                    }
+                }
             }
         }
         stage('aws') {
