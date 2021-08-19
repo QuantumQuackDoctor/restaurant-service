@@ -3,7 +3,6 @@
         return tag
     }
 
-
 pipeline {
     agent any
     environment{
@@ -37,7 +36,6 @@ pipeline {
                 waitForQualityGate abortPipeline= true
             }   
         }
-
         stage('package') {
             steps {
                 sh "mvn clean package"
@@ -55,6 +53,7 @@ pipeline {
                 }
             }
         }
+        
         stage('aws') {
             steps {
                 echo "aws"
