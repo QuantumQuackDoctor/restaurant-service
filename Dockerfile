@@ -1,10 +1,9 @@
 FROM adoptopenjdk:16-jre-openj9 
 
-WORKDIR /var/lib/jenkins/workspace/restaurant-service-job
-ARG JAR_FILE=/target/*.jar
+ARG JAR_FILE=restaurant-api/target/*.jar
 
 COPY ${JAR_FILE} app.jar
 
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
 
 
