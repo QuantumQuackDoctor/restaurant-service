@@ -1,22 +1,9 @@
-   def getDockerTag() {
-        def tag = sh script: 'git rev-parse HEAD', returnStdout: true
-        return tag
-    }
-
 pipeline {
     agent any
-    environment{
-	    Docker_tag = getDockerTag()
-    }
     stages {
         stage('git') {
             steps {
                 git branch: 'dev', url: 'https://github.com/QuantumQuackDoctor/restaurant-service.git'
-            }
-        }
-        stage('build') {
-            steps {
-                sh "mvn clean install"
             }
         }
         stage('test') {
@@ -41,23 +28,21 @@ pipeline {
                 sh "mvn clean package"
             }
         }
-        stage('docker') {
+        stage('ECR Push') {
             steps{
                 script {
-                    sh 'cp -r /var/lib/jenkins/workspace/restaurant-service-job/restaurant-api/target .'
-                    sh 'docker build . -t quangmtran36/qqd-restaurant-service:$Docker_tag'
-                    withCredentials([string(credentialsId: '6b6d3ec6-97dc-4c1c-bf02-67afd00371dc', variable: 'dockerHubPwd')]) {
-                        sh 'docker login -u quangmtran36 -p ${dockerHubPwd}'
-                        sh 'docker push quangmtran36/qqd-restaurant-service:$Docker_tag'                 
-                    }
+                    sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 644684002839.dkr.ecr.us-east-2.amazonaws.com"
+                    sh 'docker build -t restaurant-service .'
+                    sh 'docker tag restaurant-service:latest 644684002839.dkr.ecr.us-east-2.amazonaws.com/restaurant-service:latest'
+                    sh 'docker push 644684002839.dkr.ecr.us-east-2.amazonaws.com/restaurant-service:latest'
                 }
             }
         }
-        
-        stage('aws') {
-            steps {
-                echo "aws"
-                //sh "mvn clean test"
+    }
+    post {
+        success {
+            script {
+                sh 'docker image prune -f -a'
             }
         }
     }
