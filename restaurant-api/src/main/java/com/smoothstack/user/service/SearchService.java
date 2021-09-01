@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.database.ormlibrary.food.MenuItemEntity;
 import com.database.ormlibrary.food.PromotionsEntity;
 import com.database.ormlibrary.food.RestaurantRatingEntity;
+import com.smoothstack.user.errors.RestaurantNotFoundException;
 import com.smoothstack.user.model.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -67,6 +68,12 @@ public class SearchService {
 		} else {
 			return 0;
 		}
+	}
+
+	public Restaurant getRestaurant(Long id) throws RestaurantNotFoundException {
+		return convertToDTO(
+				restaurantRepo.findById(id).orElseThrow(() -> new RestaurantNotFoundException("id doesn't exist"))
+		);
 	}
 	
 	public Boolean filterDistance(Double lat1, Double lon1, Double lat2, Double lon2, Double miles) {
@@ -203,7 +210,8 @@ public class SearchService {
 	}
 
 	public List<RestaurantEntity> pageList(List<RestaurantEntity> list, Integer page, Integer size) {
-		return list.subList(page * size, (page + 1) * size);
+		//this can result in an index out of bounds exception
+		return list.subList(page * size, Math.min((page + 1) * size, list.size()));
 	}
 
 	public List<Restaurant> search(String search, String geolocation) throws InvalidSearchError {
