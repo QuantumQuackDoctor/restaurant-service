@@ -129,36 +129,8 @@ public class SearchService {
 
 	public Restaurant convertToDTO(RestaurantEntity entity){
 		System.out.println(entity);
-		Restaurant restaurant = modelMapper.map(entity, Restaurant.class);
-		restaurant.setId(entity.getId());
-		restaurant.setName(entity.getName());
-		restaurant.setIconId(entity.getIconId());
-		restaurant.setBackgroundId(entity.getBackgroundId());
-		for (MenuItemEntity item : entity.getMenu()) {
-			restaurant.addMenuItem(modelMapper.map(item, RestaurantMenu.class));
-		}
-		for (PromotionsEntity item : entity.getPromotions()) {
-			restaurant.addPromotionsItem(modelMapper.map(item, RestaurantPromotions.class));
-		}
-		for (RestaurantRatingEntity item : entity.getRatings()) {
-			restaurant.addRatingsItem(modelMapper.map(item, RestaurantRatings.class));
-		}
-		restaurant.setAverageRating(entity.getAverageRating());
-		restaurant.setAverageTime(entity.getAverageTime());
-		restaurant.setPriceRating(entity.getPriceRating());
-		restaurant.setGeolocation(entity.getGeolocation());
-		restaurant.setAddress(entity.getAddress());
-		RestaurantHours hours = new RestaurantHours();
-		hours.setMON(restaurant.getHours().getMON());
-		hours.setTUE(restaurant.getHours().getTUE());
-		hours.setWED(restaurant.getHours().getWED());
-		hours.setTHU(restaurant.getHours().getTHU());
-		hours.setFRI(restaurant.getHours().getFRI());
-		hours.setSAT(restaurant.getHours().getSAT());
-		hours.setSUN(restaurant.getHours().getSUN());
-		restaurant.setHours(hours);
-		//set list
-		return restaurant;
+		//none of this was necessary, modelMapper gets all parameters.
+		return modelMapper.map(entity, Restaurant.class);
 	}
 
 	public List<RestaurantEntity> sortFilterList(List<RestaurantEntity> list, String sortType, String sortValue,
