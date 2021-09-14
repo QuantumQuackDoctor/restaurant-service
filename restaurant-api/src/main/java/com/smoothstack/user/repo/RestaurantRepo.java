@@ -9,9 +9,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RestaurantRepo extends CrudRepository<RestaurantEntity, Long> {
+
+    public Optional<RestaurantEntity> findByName(String name);
 
     @Query(value = "select * from restaurant_entity where search_primary like %:search%", nativeQuery = true)
     public List<RestaurantEntity> searchRestaurantPrimary(@Param("search") String search);

@@ -1,5 +1,6 @@
 package com.smoothstack.user.api;
 
+import com.database.ormlibrary.food.MenuItemEntity;
 import com.database.ormlibrary.food.RestaurantEntity;
 import com.smoothstack.user.errors.InvalidSearchError;
 import com.smoothstack.user.errors.RestaurantNotFoundException;
@@ -12,6 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.NativeWebRequest;
+
+import com.database.ormlibrary.food.RestaurantEntity;
+import com.smoothstack.user.errors.InvalidSearchError;
+import com.smoothstack.user.service.RestaurantService;
+import com.smoothstack.user.service.SearchService;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -33,7 +40,7 @@ public class RestaurantApiController {
     }
 
 
-    @PreAuthorize("permitAll")
+    @PreAuthorize("hasAuthority('user')")
     @GetMapping(value = "/restaurants/search", produces = {"application/json"})
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = Restaurant.class, responseContainer = "List")})
@@ -72,6 +79,16 @@ public class RestaurantApiController {
         return ResponseEntity.ok(searchService.getRestaurant(id));
     }
 
+    @GetMapping(value = "/restaurants/name/{name}")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = Restaurant.class, responseContainer = "List")})
+    @ApiOperation(value = "Get Restaurant by name", nickname = "getRestaurantByName", notes = "get restaurant by name", response = Restaurant.class, responseContainer = "List", authorizations = {
+            @Authorization(value = "JWT")
+    }, tags = {"food",})
+    public ResponseEntity<Restaurant> getRestaurantByName(@PathVariable(value = "name") String name) throws RestaurantNotFoundException {
+        return ResponseEntity.ok(searchService.getRestaurantByName(name));
+    }
+
     @ExceptionHandler(RestaurantNotFoundException.class)
     public ResponseEntity<String> restaurantNotFound(RestaurantNotFoundException e) {
         return ResponseEntity.notFound().build();
@@ -88,7 +105,7 @@ public class RestaurantApiController {
         return new ResponseEntity<RestaurantEntity>(restaurantService.addRestaurant(restaurant), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/restaurants", produces = {"application/json"}, consumes = {"application/json"})
+    @DeleteMapping(value = "/restaurants/{id}", produces = {"application/json"})
     @ApiResponses({
             @ApiResponse(code = 200, message = "Deleted"),
             @ApiResponse(code = 401, message = "Access token is missing or invalid", response = String.class),
@@ -98,7 +115,7 @@ public class RestaurantApiController {
 
             @Authorization(value = "JWT")
     }, tags = {"food",})
-    public ResponseEntity<Void> deleteRestaurant(@RequestBody(required = false) @Valid @ApiParam("Restuarant id to delete") Long id) {
+    public ResponseEntity<Void> deleteRestaurant(@PathVariable(value = "id") Long id) {
         restaurantService.deleteRestaurant(id);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
@@ -212,5 +229,34 @@ public class RestaurantApiController {
     (@ApiParam(value = "Non null properties will be updated, id necessary") @Valid @RequestBody(required = false) RestaurantEntity restaurant) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
+    }
+
+    /**
+     * PATCH /restaurants/menu : Admin Update Restaurant
+     * Update any properties except image, to update image use POST /restaurant/image/{imageId}
+     *
+     * @param restaurant Non null properties will be updated, id necessary (optional)
+     * @return Update successful (status code 200)
+     * or Access token is missing or invalid (status code 401)
+     * or Forbidden (status code 403)
+     * or Not Found (status code 404)
+     */
+    @ApiOperation(value = "Admin Update Restaurant Menu", nickname = "addMenuItem", notes = "", authorizations = {
+
+            @Authorization(value = "JWT")
+    }, tags = {"food",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Update successful"),
+            @ApiResponse(code = 401, message = "Access token is missing or invalid", response = String.class),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found")})
+    @PatchMapping(
+            value = "/restaurants/menu",
+            produces = {"application/json"},
+            consumes = {"application/json", "application/xml"}
+    )
+    public ResponseEntity<Void> addMenuItem(@ApiParam(value = "item") @Valid @RequestBody(required = false) MenuItemEntity item) {
+        restaurantService.addMenuItem(item);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }
