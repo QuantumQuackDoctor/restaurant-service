@@ -3,6 +3,7 @@ package com.smoothstack.user.service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.database.ormlibrary.food.MenuItemEntity;
@@ -75,7 +76,13 @@ public class SearchService {
 				restaurantRepo.findById(id).orElseThrow(() -> new RestaurantNotFoundException("id doesn't exist"))
 		);
 	}
-	
+
+	public Restaurant getRestaurantByName(String name) throws RestaurantNotFoundException {
+		return convertToDTO(
+				restaurantRepo.findByName(name).orElseThrow(() -> new RestaurantNotFoundException("id doesn't exist"))
+		);
+	}
+
 	public Boolean filterDistance(Double lat1, Double lon1, Double lat2, Double lon2, Double miles) {
 		if (calculateDistance(lat1, lon1, lat2, lon2) < miles) {
 			return true;
@@ -132,6 +139,8 @@ public class SearchService {
 		//none of this was necessary, modelMapper gets all parameters.
 		return modelMapper.map(entity, Restaurant.class);
 	}
+
+
 
 	public List<RestaurantEntity> sortFilterList(List<RestaurantEntity> list, String sortType, String sortValue,
 			Integer stars, Integer price) {

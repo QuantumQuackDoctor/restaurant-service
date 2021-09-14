@@ -1,5 +1,6 @@
 package com.smoothstack.user.service;
 
+import com.database.ormlibrary.food.MenuItemEntity;
 import org.springframework.stereotype.Service;
 
 import com.database.ormlibrary.food.RestaurantEntity;
@@ -18,6 +19,10 @@ public class RestaurantService {
 		restaurantRepo.save(restaurant);
 
 		return restaurant;
+	}
+
+	public void addMenuItem(MenuItemEntity item) {
+
 	}
 
 	public RestaurantEntity getRestaurantById(Long id) {
