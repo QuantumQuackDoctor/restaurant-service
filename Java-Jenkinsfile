@@ -3,6 +3,9 @@ pipeline {
     environment {
         AWS_REGION='us-east-2'
     }
+    tools {
+      maven 'MAVEN_HOME'
+    }
     stages {
         stage('git') {
             steps {
