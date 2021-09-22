@@ -1,182 +1,189 @@
 package com.smoothstack.user.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-
+import java.util.Objects;
 import javax.validation.Valid;
 
 /**
- * RestaurantHours
+ * RestaurantHours.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-30T22:10:31.533216200-06:00[America/Denver]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen",
+    date = "2021-06-30T22:10:31.533216200-06:00[America/Denver]")
 public class RestaurantHours   {
   @JsonProperty("MON")
-  private String MON;
+  private String mon;
 
   @JsonProperty("TUE")
-  private String TUE;
+  private String tue;
 
   @JsonProperty("WED")
-  private String WED;
+  private String wed;
 
   @JsonProperty("THU")
-  private String THU;
+  private String thu;
 
   @JsonProperty("FRI")
-  private String FRI;
+  private String fri;
 
   @JsonProperty("SAT")
-  private String SAT;
+  private String sat;
 
   @JsonProperty("SUN")
-  private String SUN;
+  private String sun;
 
-  public RestaurantHours MON(String MON) {
-    this.MON = MON;
+  public RestaurantHours mon(String mon) {
+    this.mon = mon;
     return this;
   }
 
   /**
-   * Get MON
+   * Get MON.
+
    * @return MON
   */
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public String getMON() {
-    return MON;
+  public String getMon() {
+    return mon;
   }
 
-  public void setMON(String MON) {
-    this.MON = MON;
+  public void setMon(String mon) {
+    this.mon = mon;
   }
 
-  public RestaurantHours TUE(String TUE) {
-    this.TUE = TUE;
+  public RestaurantHours tue(String tue) {
+    this.tue = tue;
     return this;
   }
 
   /**
-   * Get TUE
+   * Get TUE.
+
    * @return TUE
   */
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public String getTUE() {
-    return TUE;
+  public String getTue() {
+    return tue;
   }
 
-  public void setTUE(String TUE) {
-    this.TUE = TUE;
+  public void setTue(String tue) {
+    this.tue = tue;
   }
 
-  public RestaurantHours WED(String WED) {
-    this.WED = WED;
+  public RestaurantHours wed(String wed) {
+    this.wed = wed;
     return this;
   }
 
   /**
-   * Get WED
+   * Get WED.
+
    * @return WED
   */
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public String getWED() {
-    return WED;
+  public String getWed() {
+    return wed;
   }
 
-  public void setWED(String WED) {
-    this.WED = WED;
+  public void setWed(String wed) {
+    this.wed = wed;
   }
 
-  public RestaurantHours THU(String THU) {
-    this.THU = THU;
+  public RestaurantHours thu(String thu) {
+    this.thu = thu;
     return this;
   }
 
   /**
-   * Get THU
+   * Get THU.
+
    * @return THU
   */
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public String getTHU() {
-    return THU;
+  public String getThu() {
+    return thu;
   }
 
-  public void setTHU(String THU) {
-    this.THU = THU;
+  public void setThu(String thu) {
+    this.thu = thu;
   }
 
-  public RestaurantHours FRI(String FRI) {
-    this.FRI = FRI;
+  public RestaurantHours fri(String fri) {
+    this.fri = fri;
     return this;
   }
 
   /**
-   * Get FRI
+   * Get FRI.
+
    * @return FRI
   */
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public String getFRI() {
-    return FRI;
+  public String getFri() {
+    return fri;
   }
 
-  public void setFRI(String FRI) {
-    this.FRI = FRI;
+  public void setFri(String fri) {
+    this.fri = fri;
   }
 
-  public RestaurantHours SAT(String SAT) {
-    this.SAT = SAT;
+  public RestaurantHours sat(String sat) {
+    this.sat = sat;
     return this;
   }
 
   /**
-   * Get SAT
+   * Get SAT.
+
    * @return SAT
   */
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public String getSAT() {
-    return SAT;
+  public String getSat() {
+    return sat;
   }
 
-  public void setSAT(String SAT) {
-    this.SAT = SAT;
+  public void setSat(String sat) {
+    this.sat = sat;
   }
 
-  public RestaurantHours SUN(String SUN) {
-    this.SUN = SUN;
+  public RestaurantHours sun(String sun) {
+    this.sun = sun;
     return this;
   }
 
   /**
-   * Get SUN
+   * Get SUN.
+
    * @return SUN
   */
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public String getSUN() {
-    return SUN;
+  public String getSun() {
+    return sun;
   }
 
-  public void setSUN(String SUN) {
-    this.SUN = SUN;
+  public void setSun(String sun) {
+    this.sun = sun;
   }
 
 
@@ -189,18 +196,18 @@ public class RestaurantHours   {
       return false;
     }
     RestaurantHours restaurantHours = (RestaurantHours) o;
-    return Objects.equals(this.MON, restaurantHours.MON) &&
-        Objects.equals(this.TUE, restaurantHours.TUE) &&
-        Objects.equals(this.WED, restaurantHours.WED) &&
-        Objects.equals(this.THU, restaurantHours.THU) &&
-        Objects.equals(this.FRI, restaurantHours.FRI) &&
-        Objects.equals(this.SAT, restaurantHours.SAT) &&
-        Objects.equals(this.SUN, restaurantHours.SUN);
+    return Objects.equals(this.mon, restaurantHours.mon)
+        && Objects.equals(this.tue, restaurantHours.tue)
+        && Objects.equals(this.wed, restaurantHours.wed)
+        && Objects.equals(this.thu, restaurantHours.thu)
+        && Objects.equals(this.fri, restaurantHours.fri)
+        && Objects.equals(this.sat, restaurantHours.sat)
+        && Objects.equals(this.sun, restaurantHours.sun);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(MON, TUE, WED, THU, FRI, SAT, SUN);
+    return Objects.hash(mon, tue, wed, thu, fri, sat, sun);
   }
 
   @Override
@@ -208,13 +215,13 @@ public class RestaurantHours   {
     StringBuilder sb = new StringBuilder();
     sb.append("class RestaurantHours {\n");
     
-    sb.append("    MON: ").append(toIndentedString(MON)).append("\n");
-    sb.append("    TUE: ").append(toIndentedString(TUE)).append("\n");
-    sb.append("    WED: ").append(toIndentedString(WED)).append("\n");
-    sb.append("    THU: ").append(toIndentedString(THU)).append("\n");
-    sb.append("    FRI: ").append(toIndentedString(FRI)).append("\n");
-    sb.append("    SAT: ").append(toIndentedString(SAT)).append("\n");
-    sb.append("    SUN: ").append(toIndentedString(SUN)).append("\n");
+    sb.append("    MON: ").append(toIndentedString(mon)).append("\n");
+    sb.append("    TUE: ").append(toIndentedString(tue)).append("\n");
+    sb.append("    WED: ").append(toIndentedString(wed)).append("\n");
+    sb.append("    THU: ").append(toIndentedString(thu)).append("\n");
+    sb.append("    FRI: ").append(toIndentedString(fri)).append("\n");
+    sb.append("    SAT: ").append(toIndentedString(sat)).append("\n");
+    sb.append("    SUN: ").append(toIndentedString(sun)).append("\n");
     sb.append("}");
     return sb.toString();
   }

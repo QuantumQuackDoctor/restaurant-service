@@ -1,15 +1,16 @@
 package com.smoothstack.user.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 /**
- * Restaurant
+ * Restaurant.
  */
 public class Restaurant   {
   @JsonProperty("id")
@@ -60,7 +61,8 @@ public class Restaurant   {
   }
 
   /**
-   * Get id
+   * Get id.
+
    * @return id
   */
   @ApiModelProperty(value = "")
@@ -80,7 +82,8 @@ public class Restaurant   {
   }
 
   /**
-   * Get name
+   * Get name.
+
    * @return name
   */
   @ApiModelProperty(value = "")
@@ -100,7 +103,8 @@ public class Restaurant   {
   }
 
   /**
-   * Image path
+   * Image path.
+
    * @return iconId
   */
   @ApiModelProperty(value = "Image path")
@@ -121,7 +125,8 @@ public class Restaurant   {
   }
 
   /**
-   * Image path
+   * Image path.
+
    * @return backgroundId
   */
   @ApiModelProperty(value = "Image path")
@@ -140,6 +145,11 @@ public class Restaurant   {
     return this;
   }
 
+  /**
+   * Add MenuItem.
+
+   * @return menuItem
+   */
   public Restaurant addMenuItem(RestaurantMenu menuItem) {
     if (this.menu == null) {
       this.menu = new ArrayList<>();
@@ -149,7 +159,8 @@ public class Restaurant   {
   }
 
   /**
-   * Get menu
+   * Get menu.
+
    * @return menu
   */
   @ApiModelProperty(value = "")
@@ -169,6 +180,11 @@ public class Restaurant   {
     return this;
   }
 
+  /**
+   * Add PromotionItem.
+
+   * @return promotionItem
+   */
   public Restaurant addPromotionsItem(RestaurantPromotions promotionsItem) {
     if (this.promotions == null) {
       this.promotions = new ArrayList<>();
@@ -178,7 +194,8 @@ public class Restaurant   {
   }
 
   /**
-   * Get promotions
+   * Get promotions.
+
    * @return promotions
   */
   @ApiModelProperty(value = "")
@@ -198,6 +215,11 @@ public class Restaurant   {
     return this;
   }
 
+  /**
+   * Add RatingItem.
+
+   * @return ratingItem
+   */
   public Restaurant addRatingsItem(RestaurantRatings ratingsItem) {
     if (this.ratings == null) {
       this.ratings = new ArrayList<>();
@@ -207,7 +229,8 @@ public class Restaurant   {
   }
 
   /**
-   * Get ratings
+   * Get ratings.
+
    * @return ratings
   */
   @ApiModelProperty(value = "")
@@ -228,14 +251,16 @@ public class Restaurant   {
   }
 
   /**
-   * Get rating
+   * Get rating.
    * minimum: 1
    * maximum: 5
+
    * @return rating
   */
   @ApiModelProperty(value = "")
 
-@Min(1) @Max(5) 
+  @Min(1)
+  @Max(5)
   public Integer getAverageRating() {
     return averageRating;
   }
@@ -250,7 +275,8 @@ public class Restaurant   {
   }
 
   /**
-   * minutes, rounded to int
+   * minutes, rounded to int.
+
    * @return averageTime
   */
   @ApiModelProperty(value = "minutes, rounded to int")
@@ -270,14 +296,16 @@ public class Restaurant   {
   }
 
   /**
-   * Get priceRating
+   * Get priceRating.
    * minimum: 1
    * maximum: 3
+
    * @return priceRating
   */
   @ApiModelProperty(value = "")
 
-@Min(1) @Max(3) 
+  @Min(1)
+  @Max(3)
   public Integer getPriceRating() {
     return priceRating;
   }
@@ -292,7 +320,8 @@ public class Restaurant   {
   }
 
   /**
-   * Get geolocation
+   * Get geolocation.
+
    * @return geolocation
   */
   @ApiModelProperty(value = "")
@@ -312,7 +341,8 @@ public class Restaurant   {
   }
 
   /**
-   * Get address
+   * Get address.
+
    * @return address
   */
   @ApiModelProperty(value = "")
@@ -332,7 +362,8 @@ public class Restaurant   {
   }
 
   /**
-   * Get hours
+   * Get hours.
+
    * @return hours
   */
   @ApiModelProperty(value = "")
@@ -357,24 +388,25 @@ public class Restaurant   {
       return false;
     }
     Restaurant restaurant = (Restaurant) o;
-    return Objects.equals(this.id, restaurant.id) &&
-        Objects.equals(this.name, restaurant.name) &&
-        Objects.equals(this.iconId, restaurant.iconId) &&
-        Objects.equals(this.backgroundId, restaurant.backgroundId) &&
-        Objects.equals(this.menu, restaurant.menu) &&
-        Objects.equals(this.promotions, restaurant.promotions) &&
-        Objects.equals(this.ratings, restaurant.ratings) &&
-        Objects.equals(this.averageRating, restaurant.averageRating) &&
-        Objects.equals(this.averageTime, restaurant.averageTime) &&
-        Objects.equals(this.priceRating, restaurant.priceRating) &&
-        Objects.equals(this.geolocation, restaurant.geolocation) &&
-        Objects.equals(this.address, restaurant.address) &&
-        Objects.equals(this.hours, restaurant.hours);
+    return Objects.equals(this.id, restaurant.id)
+        && Objects.equals(this.name, restaurant.name)
+        && Objects.equals(this.iconId, restaurant.iconId)
+        && Objects.equals(this.backgroundId, restaurant.backgroundId)
+        && Objects.equals(this.menu, restaurant.menu)
+        && Objects.equals(this.promotions, restaurant.promotions)
+        && Objects.equals(this.ratings, restaurant.ratings)
+        && Objects.equals(this.averageRating, restaurant.averageRating)
+        && Objects.equals(this.averageTime, restaurant.averageTime)
+        && Objects.equals(this.priceRating, restaurant.priceRating)
+        && Objects.equals(this.geolocation, restaurant.geolocation)
+        && Objects.equals(this.address, restaurant.address)
+        && Objects.equals(this.hours, restaurant.hours);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, iconId, backgroundId, menu, promotions, ratings, averageRating, averageTime, priceRating, geolocation, address, hours);
+    return Objects.hash(id, name, iconId, backgroundId, menu, promotions, ratings,
+        averageRating, averageTime, priceRating, geolocation, address, hours);
   }
 
   @Override

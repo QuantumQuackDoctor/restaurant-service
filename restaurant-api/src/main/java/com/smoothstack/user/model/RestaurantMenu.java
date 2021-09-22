@@ -1,16 +1,17 @@
 package com.smoothstack.user.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.validation.Valid;
 
 /**
- * RestaurantMenu
+ * RestaurantMenu.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-30T22:10:31.533216200-06:00[America/Denver]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen",
+    date = "2021-06-30T22:10:31.533216200-06:00[America/Denver]")
 public class RestaurantMenu   {
   @JsonProperty("name")
   private String name;
@@ -37,7 +38,8 @@ public class RestaurantMenu   {
   }
 
   /**
-   * Get name
+   * Get name.
+
    * @return name
   */
   @ApiModelProperty(value = "")
@@ -57,7 +59,8 @@ public class RestaurantMenu   {
   }
 
   /**
-   * Get imageId
+   * Get imageId.
+
    * @return imageId
   */
   @ApiModelProperty(value = "")
@@ -77,7 +80,8 @@ public class RestaurantMenu   {
   }
 
   /**
-   * Get allergens
+   * Get allergens.
+
    * @return allergens
   */
   @ApiModelProperty(value = "")
@@ -97,7 +101,8 @@ public class RestaurantMenu   {
   }
 
   /**
-   * Get price
+   * Get price.
+
    * @return price
    */
   @ApiModelProperty(value = "")
@@ -116,7 +121,8 @@ public class RestaurantMenu   {
   }
 
   /**
-   * Get description
+   * Get description.
+
    * @return description
    */
   @ApiModelProperty(value = "")
@@ -134,6 +140,11 @@ public class RestaurantMenu   {
     return this;
   }
 
+  /**
+   * Add configurations.
+
+   * @return menu
+   */
   public RestaurantMenu addConfigurationsItem(String configurationsItem) {
     if (this.configurations == null) {
       this.configurations = new ArrayList<>();
@@ -143,7 +154,8 @@ public class RestaurantMenu   {
   }
 
   /**
-   * Get configurations
+   * Get configurations.
+
    * @return configurations
   */
   @ApiModelProperty(value = "")
@@ -167,10 +179,10 @@ public class RestaurantMenu   {
       return false;
     }
     RestaurantMenu restaurantMenu = (RestaurantMenu) o;
-    return Objects.equals(this.name, restaurantMenu.name) &&
-        Objects.equals(this.imageId, restaurantMenu.imageId) &&
-        Objects.equals(this.allergens, restaurantMenu.allergens) &&
-        Objects.equals(this.configurations, restaurantMenu.configurations);
+    return Objects.equals(this.name, restaurantMenu.name)
+        && Objects.equals(this.imageId, restaurantMenu.imageId)
+        && Objects.equals(this.allergens, restaurantMenu.allergens)
+        && Objects.equals(this.configurations, restaurantMenu.configurations);
   }
 
   @Override

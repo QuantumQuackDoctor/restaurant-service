@@ -5,14 +5,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 /**
- * Home redirection to OpenAPI api documentation
+ * Home redirection to OpenAPI api documentation.
  */
 @Controller
 public class DocsController {
 
-    @RequestMapping("/docs")
-    public String index() {
-        return "redirect:swagger-ui.html";
-    }
+  @RequestMapping("/docs")
+  public String index() {
+    return "redirect:swagger-ui.html";
+  }
 
 }

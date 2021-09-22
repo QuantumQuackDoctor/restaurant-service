@@ -1,20 +1,21 @@
 package com.smoothstack.user.model;
 
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
+import java.util.Objects;
 import javax.validation.Valid;
 
 /**
- * RestaurantPromotions
+ * RestaurantPromotions.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-30T22:10:31.533216200-06:00[America/Denver]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen",
+    date = "2021-06-30T22:10:31.533216200-06:00[America/Denver]")
 public class RestaurantPromotions   {
   /**
-   * Gets or Sets promotionType
+   * Gets or Sets promotionType.
    */
   public enum PromotionTypeEnum {
     VETERAN("veteran"),
@@ -41,6 +42,9 @@ public class RestaurantPromotions   {
       return String.valueOf(value);
     }
 
+    /**
+     * Checks Value of Promotion.
+     */
     @JsonCreator
     public static PromotionTypeEnum fromValue(String value) {
       for (PromotionTypeEnum b : PromotionTypeEnum.values()) {
@@ -62,7 +66,7 @@ public class RestaurantPromotions   {
   private BigDecimal discount;
 
   /**
-   * Gets or Sets discountType
+   * Gets or Sets discountType.
    */
   public enum DiscountTypeEnum {
     PERCENT("percent"),
@@ -85,6 +89,9 @@ public class RestaurantPromotions   {
       return String.valueOf(value);
     }
 
+    /**
+     * Checks Discount Type of Promotion.
+     */
     @JsonCreator
     public static DiscountTypeEnum fromValue(String value) {
       for (DiscountTypeEnum b : DiscountTypeEnum.values()) {
@@ -105,7 +112,8 @@ public class RestaurantPromotions   {
   }
 
   /**
-   * Get promotionType
+   * Get promotionType.
+
    * @return promotionType
   */
   @ApiModelProperty(value = "")
@@ -125,7 +133,8 @@ public class RestaurantPromotions   {
   }
 
   /**
-   * figure this out better
+   * figure this out better.
+
    * @return condition
   */
   @ApiModelProperty(value = "figure this out better")
@@ -145,7 +154,8 @@ public class RestaurantPromotions   {
   }
 
   /**
-   * Get discount
+   * Get discount.
+
    * @return discount
   */
   @ApiModelProperty(value = "")
@@ -166,7 +176,8 @@ public class RestaurantPromotions   {
   }
 
   /**
-   * Get discountType
+   * Get discountType.
+
    * @return discountType
   */
   @ApiModelProperty(value = "")
@@ -190,10 +201,10 @@ public class RestaurantPromotions   {
       return false;
     }
     RestaurantPromotions restaurantPromotions = (RestaurantPromotions) o;
-    return Objects.equals(this.promotionType, restaurantPromotions.promotionType) &&
-        Objects.equals(this.condition, restaurantPromotions.condition) &&
-        Objects.equals(this.discount, restaurantPromotions.discount) &&
-        Objects.equals(this.discountType, restaurantPromotions.discountType);
+    return Objects.equals(this.promotionType, restaurantPromotions.promotionType)
+        && Objects.equals(this.condition, restaurantPromotions.condition)
+        && Objects.equals(this.discount, restaurantPromotions.discount)
+        && Objects.equals(this.discountType, restaurantPromotions.discountType);
   }
 
   @Override

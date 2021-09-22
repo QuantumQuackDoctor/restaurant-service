@@ -1,15 +1,17 @@
 package com.smoothstack.user.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.Objects;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
-import javax.validation.constraints.*;
 
 /**
- * RestaurantRatings
+ * RestaurantRatings.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-30T22:10:31.533216200-06:00[America/Denver]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen",
+    date = "2021-06-30T22:10:31.533216200-06:00[America/Denver]")
 public class RestaurantRatings   {
   @JsonProperty("image")
   private String imageId;
@@ -26,7 +28,8 @@ public class RestaurantRatings   {
   }
 
   /**
-   * filepath
+   * filepath.
+
    * @return image
   */
   @ApiModelProperty(value = "filepath")
@@ -46,14 +49,16 @@ public class RestaurantRatings   {
   }
 
   /**
-   * Get stars
+   * Get stars.
    * minimum: 1
    * maximum: 5
+
    * @return stars
   */
   @ApiModelProperty(value = "")
 
-@Min(1) @Max(5) 
+  @Min(1)
+  @Max(5)
   public Integer getStars() {
     return stars;
   }
@@ -68,7 +73,8 @@ public class RestaurantRatings   {
   }
 
   /**
-   * Get description
+   * Get description.
+
    * @return description
   */
   @ApiModelProperty(value = "")
@@ -92,9 +98,9 @@ public class RestaurantRatings   {
       return false;
     }
     RestaurantRatings restaurantRatings = (RestaurantRatings) o;
-    return Objects.equals(this.imageId, restaurantRatings.imageId) &&
-        Objects.equals(this.stars, restaurantRatings.stars) &&
-        Objects.equals(this.description, restaurantRatings.description);
+    return Objects.equals(this.imageId, restaurantRatings.imageId)
+        && Objects.equals(this.stars, restaurantRatings.stars)
+        && Objects.equals(this.description, restaurantRatings.description);
   }
 
   @Override

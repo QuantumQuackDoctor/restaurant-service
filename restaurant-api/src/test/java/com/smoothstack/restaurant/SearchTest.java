@@ -10,12 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.database.ormlibrary.CoordinatesEmbeddable;
 import com.database.ormlibrary.SearchEmbeddable;
 import com.database.ormlibrary.food.RestaurantEntity;
-import com.smoothstack.user.OpenAPI2SpringBoot;
+import com.smoothstack.user.OpenApi2SpringBoot;
 import com.smoothstack.user.service.RestaurantService;
 import com.smoothstack.user.service.SearchService;
-import org.springframework.security.test.context.support.WithMockUser;
 
-@SpringBootTest(classes = { OpenAPI2SpringBoot.class })
+@SpringBootTest(classes = { OpenApi2SpringBoot.class })
 public class SearchTest {
 	@Autowired
 	RestaurantService restaurantService;

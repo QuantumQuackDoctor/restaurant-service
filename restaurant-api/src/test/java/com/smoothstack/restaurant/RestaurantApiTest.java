@@ -24,14 +24,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.database.ormlibrary.CoordinatesEmbeddable;
 import com.database.ormlibrary.SearchEmbeddable;
-import com.database.ormlibrary.food.RestaurantEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.smoothstack.user.OpenAPI2SpringBoot;
+import com.smoothstack.user.OpenApi2SpringBoot;
 import com.smoothstack.user.repo.RestaurantRepo;
 import com.smoothstack.user.service.RestaurantService;
 import com.smoothstack.user.service.SearchService;
 
-@SpringBootTest(classes = { OpenAPI2SpringBoot.class })
+@SpringBootTest(classes = { OpenApi2SpringBoot.class })
 @AutoConfigureMockMvc
 class RestaurantApiTest {
 	@MockBean(RestaurantRepo.class)
