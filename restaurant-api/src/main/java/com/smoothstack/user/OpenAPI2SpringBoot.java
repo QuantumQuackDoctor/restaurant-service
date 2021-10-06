@@ -24,7 +24,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableJpaRepositories(basePackages = {"com.database.security", "com.smoothstack.user.repo"})
 public class OpenAPI2SpringBoot implements CommandLineRunner {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         new SpringApplication(OpenAPI2SpringBoot.class).run(args);
     }
 
@@ -43,15 +43,7 @@ public class OpenAPI2SpringBoot implements CommandLineRunner {
     @Bean
     public WebMvcConfigurer webConfigurer() {
         return new WebMvcConfigurer() {
-            /*
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("*")
-                        .allowedMethods("*")
-                        .allowedHeaders("Content-Type");
-            }
-            */
+
         };
     }
 

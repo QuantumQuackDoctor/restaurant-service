@@ -1,5 +1,6 @@
 package com.smoothstack.user.api;
 
+import com.database.ormlibrary.food.MenuItemEntity;
 import com.database.ormlibrary.food.RestaurantEntity;
 import com.smoothstack.user.errors.InvalidSearchError;
 import com.smoothstack.user.errors.RestaurantNotFoundException;
@@ -37,7 +38,7 @@ public class RestaurantApiController {
     }
 
 
-    @PreAuthorize("permitAll")
+    @PreAuthorize("hasAuthority('user')")
     @GetMapping(value = "/restaurants/search", produces = {"application/json"})
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = Restaurant.class, responseContainer = "List")})
@@ -54,11 +55,8 @@ public class RestaurantApiController {
             @RequestParam(value = "page", required = false) @Valid @ApiParam("page to return indexed by 0") @Min(0) Integer page,
             @RequestParam(value = "size", required = false) @Valid @ApiParam("items in page") @Min(1) Integer size)
             throws InvalidSearchError {
-        // return RestaurantApi.super.getFood(search, geolocation, distance,
-        // filterAllergens, filterDietaryRestrictions, stars, page, size);
 
-        return new ResponseEntity<List<Restaurant>>(searchService.search(search, geolocation, sortType, sortValue, stars, price, page, size), HttpStatus.OK);
-//		return new ResponseEntity<List<Restaurant>>(searchService.search(search, geolocation, sortType, sortValue, stars, price), HttpStatus.OK);
+        return new ResponseEntity<>(searchService.search(search, sortType, sortValue, stars, price, page, size), HttpStatus.OK);
     }
 
     @ExceptionHandler(InvalidSearchError.class)
@@ -76,6 +74,16 @@ public class RestaurantApiController {
         return ResponseEntity.ok(searchService.getRestaurant(id));
     }
 
+    @GetMapping(value = "/restaurants/name/{name}")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = Restaurant.class, responseContainer = "List")})
+    @ApiOperation(value = "Get Restaurant by name", nickname = "getRestaurantByName", notes = "get restaurant by name", response = Restaurant.class, responseContainer = "List", authorizations = {
+            @Authorization(value = "JWT")
+    }, tags = {"food",})
+    public ResponseEntity<Restaurant> getRestaurantByName(@PathVariable(value = "name") String name) throws RestaurantNotFoundException {
+        return ResponseEntity.ok(searchService.getRestaurantByName(name));
+    }
+
     @ExceptionHandler(RestaurantNotFoundException.class)
     public ResponseEntity<String> restaurantNotFound(RestaurantNotFoundException e) {
         return ResponseEntity.notFound().build();
@@ -88,11 +96,10 @@ public class RestaurantApiController {
             @ApiResponse(code = 403, message = "Forbidden")})
     @ApiOperation(value = "Admin Create Restaurant", nickname = "createRestaurant", notes = "Create new restaurant, images to be uploaded at POST /restaurant/image", response = RestaurantEntity.class, tags = {"food",})
     public ResponseEntity<RestaurantEntity> createRestaurant(@RequestBody(required = false) @Valid @ApiParam("Restaurant object with null imageId's") RestaurantEntity restaurant) {
-        // return RestaurantApi.super.createRestaurant(restaurant);
-        return new ResponseEntity<RestaurantEntity>(restaurantService.addRestaurant(restaurant), HttpStatus.OK);
+        return new ResponseEntity<>(restaurantService.addRestaurant(restaurant), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/restaurants", produces = {"application/json"}, consumes = {"application/json"})
+    @DeleteMapping(value = "/restaurants/{id}", produces = {"application/json"})
     @ApiResponses({
             @ApiResponse(code = 200, message = "Deleted"),
             @ApiResponse(code = 401, message = "Access token is missing or invalid", response = String.class),
@@ -102,9 +109,9 @@ public class RestaurantApiController {
 
             @Authorization(value = "JWT")
     }, tags = {"food",})
-    public ResponseEntity<Void> deleteRestaurant(@RequestBody(required = false) @Valid @ApiParam("Restuarant id to delete") Long id) {
+    public ResponseEntity<Void> deleteRestaurant(@PathVariable(value = "id") Long id) {
         restaurantService.deleteRestaurant(id);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -227,5 +234,34 @@ public class RestaurantApiController {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e){
         return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    /**
+     * PATCH /restaurants/menu : Admin Update Restaurant
+     * Update any properties except image, to update image use POST /restaurant/image/{imageId}
+     *
+     * @param restaurant Non null properties will be updated, id necessary (optional)
+     * @return Update successful (status code 200)
+     * or Access token is missing or invalid (status code 401)
+     * or Forbidden (status code 403)
+     * or Not Found (status code 404)
+     */
+    @ApiOperation(value = "Admin Update Restaurant Menu", nickname = "addMenuItem", notes = "", authorizations = {
+
+            @Authorization(value = "JWT")
+    }, tags = {"food",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Update successful"),
+            @ApiResponse(code = 401, message = "Access token is missing or invalid", response = String.class),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found")})
+    @PatchMapping(
+            value = "/restaurants/menu",
+            produces = {"application/json"},
+            consumes = {"application/json", "application/xml"}
+    )
+    public ResponseEntity<Void> addMenuItem(@ApiParam(value = "item") @Valid @RequestBody(required = false) MenuItemEntity item) {
+        restaurantService.addMenuItem(item);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

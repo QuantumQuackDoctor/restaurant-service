@@ -1,7 +1,7 @@
 package com.smoothstack.user.configuration;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 
 /**
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class DocsController {
 
-    @RequestMapping("/docs")
-    public String index() {
-        return "redirect:swagger-ui.html";
-    }
+  @GetMapping(value = "/docs")
+  public String index() {
+    return "redirect:swagger-ui.html";
+  }
 
 }

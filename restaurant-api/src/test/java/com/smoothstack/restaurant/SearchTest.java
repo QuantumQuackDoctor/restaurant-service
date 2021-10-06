@@ -15,8 +15,10 @@ import com.smoothstack.user.service.RestaurantService;
 import com.smoothstack.user.service.SearchService;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest(classes = { OpenAPI2SpringBoot.class })
-public class SearchTest {
+class SearchTest {
 	@Autowired
 	RestaurantService restaurantService;
 	@Autowired
@@ -30,6 +32,8 @@ public class SearchTest {
 
 		// Test default ordering
 		List<RestaurantEntity> rests = searchService.sortFilterList(sflist, "", "", 0, 5);
+
+		assertEquals(sflist.size(), rests.size());
 
 		assert (rests.size() > 1);
 		for (int i = 1; i < rests.size(); i++) {

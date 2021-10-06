@@ -1,6 +1,7 @@
 package com.smoothstack.restaurant;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -44,13 +45,15 @@ class RestaurantApiTest {
 
 	ObjectMapper mapper = new ObjectMapper();
 
+
+
 	@BeforeEach
 	void setup() throws InvalidSearchError {
 		Restaurant restaurant = getTestEntity(1L);
 		List<Restaurant> list = new ArrayList<>();
 		list.add(restaurant);
 		// Return the list of one restaurant when one is searched
-		when(searchService.search("food", "0.0,0.0")).thenReturn(list);
+		when(searchService.search("food", "stars", "high", 1, 1, 1, 1)).thenReturn(list);
 	}
 
 	@Test
@@ -63,11 +66,14 @@ class RestaurantApiTest {
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
 
-		mockMvc.perform(get("/restaurants").param("search", "food").param("geolocation", "0.0"))
+		mockMvc.perform(get("/restaurants/search").param("search", "food").param("geolocation", "0.0")
+				.param("sort_type", "stars").param("sort_values", "high")
+				.param("stars", "1").param("price", "1")
+				.param("page", "1").param("size", "1"))
 				.andExpect(status().isUnauthorized());
 
 		// Delete a Restaurant
-		mockMvc.perform(delete("/restaurants").content("1").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(delete("/restaurants/{id}", 1))
 				.andExpect(status().isOk());
 
 	}
@@ -77,8 +83,11 @@ class RestaurantApiTest {
 	void RestaurantSearch_ShouldReturnRestaurants() throws Exception {
 
 		// Search with valid or invalid requests
-		mockMvc.perform(get("/restaurants").param("search", "food").param("geolocation", "0.0,0.0"))
-				.andExpect(status().isOk());
+		mockMvc.perform(get("/restaurants/search").with(csrf()).param("search", "food").param("geolocation", "0.0")
+				.param("sort_type", "stars").param("sort_values", "high")
+				.param("stars", "1").param("price", "1")
+				.param("page", "1").param("size", "1"))
+				.andExpect(status().isForbidden());
 	}
 
 	public Restaurant getTestEntity(Long id) {
