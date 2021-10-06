@@ -104,7 +104,7 @@ Resources:
           ContainerPort: 8080
           TargetGroupArn:
             Fn::ImportValue: !Sub "${BaseStackName}-RestaurantTGArn"
-      TaskDefinition: !Ref TaskDefinition
+      TaskDefinition: !Ref RestaurantTaskDefinition
       NetworkConfiguration:
         AwsvpcConfiguration:
           SecurityGroups:
