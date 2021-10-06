@@ -124,6 +124,6 @@ Resources:
           PathPatternConfig:
             Values:
               - /restaurants/*
-      Priority: 4
+      Priority: 6
       ListenerArn:
         Fn::ImportValue: !Sub "${BaseStackName}-LBListenerARN"
