@@ -23,7 +23,7 @@ public class RestaurantService {
 
 	public void addMenuItem(MenuItemEntity item) {
 	  if (item == null) {
-	    return;
+	    item = null;
     }
 	}
 

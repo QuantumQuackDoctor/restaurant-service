@@ -41,7 +41,7 @@ pipeline {
                         {
                             sh 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com'
                             sh 'docker build -t restaurant-service .'
-                            sh 'docker tag java-restaurant-service:latest ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/restaurant-service:latest'
+                            sh 'docker tag restaurant-service:latest ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/restaurant-service:latest'
                             sh 'docker push ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/restaurant-service:latest'
                         }
                     }
