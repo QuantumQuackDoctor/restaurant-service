@@ -13,12 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.NativeWebRequest;
-
-import com.database.ormlibrary.food.RestaurantEntity;
-import com.smoothstack.user.errors.InvalidSearchError;
-import com.smoothstack.user.service.RestaurantService;
-import com.smoothstack.user.service.SearchService;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -57,11 +51,8 @@ public class RestaurantApiController {
             @RequestParam(value = "page", required = false) @Valid @ApiParam("page to return indexed by 0") @Min(0) Integer page,
             @RequestParam(value = "size", required = false) @Valid @ApiParam("items in page") @Min(1) Integer size)
             throws InvalidSearchError {
-        // return RestaurantApi.super.getFood(search, geolocation, distance,
-        // filterAllergens, filterDietaryRestrictions, stars, page, size);
 
-        return new ResponseEntity<List<Restaurant>>(searchService.search(search, geolocation, sortType, sortValue, stars, price, page, size), HttpStatus.OK);
-//		return new ResponseEntity<List<Restaurant>>(searchService.search(search, geolocation, sortType, sortValue, stars, price), HttpStatus.OK);
+        return new ResponseEntity<>(searchService.search(search, sortType, sortValue, stars, price, page, size), HttpStatus.OK);
     }
 
     @ExceptionHandler(InvalidSearchError.class)
@@ -101,8 +92,7 @@ public class RestaurantApiController {
             @ApiResponse(code = 403, message = "Forbidden")})
     @ApiOperation(value = "Admin Create Restaurant", nickname = "createRestaurant", notes = "Create new restaurant, images to be uploaded at POST /restaurant/image", response = RestaurantEntity.class, tags = {"food",})
     public ResponseEntity<RestaurantEntity> createRestaurant(@RequestBody(required = false) @Valid @ApiParam("Restaurant object with null imageId's") RestaurantEntity restaurant) {
-        // return RestaurantApi.super.createRestaurant(restaurant);
-        return new ResponseEntity<RestaurantEntity>(restaurantService.addRestaurant(restaurant), HttpStatus.OK);
+        return new ResponseEntity<>(restaurantService.addRestaurant(restaurant), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/restaurants/{id}", produces = {"application/json"})
@@ -117,7 +107,7 @@ public class RestaurantApiController {
     }, tags = {"food",})
     public ResponseEntity<Void> deleteRestaurant(@PathVariable(value = "id") Long id) {
         restaurantService.deleteRestaurant(id);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -257,6 +247,6 @@ public class RestaurantApiController {
     )
     public ResponseEntity<Void> addMenuItem(@ApiParam(value = "item") @Valid @RequestBody(required = false) MenuItemEntity item) {
         restaurantService.addMenuItem(item);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

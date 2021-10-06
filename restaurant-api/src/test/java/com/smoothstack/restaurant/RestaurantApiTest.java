@@ -53,7 +53,7 @@ class RestaurantApiTest {
 		List<Restaurant> list = new ArrayList<>();
 		list.add(restaurant);
 		// Return the list of one restaurant when one is searched
-		when(searchService.search("food", "0.0,0.0", "stars", "high", 1, 1, 1, 1)).thenReturn(list);
+		when(searchService.search("food", "stars", "high", 1, 1, 1, 1)).thenReturn(list);
 	}
 
 	@Test

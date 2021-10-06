@@ -83,32 +83,19 @@ public class SearchService {
 	}
 
 	public Boolean filterDistance(Double lat1, Double lon1, Double lat2, Double lon2, Double miles) {
-		if (calculateDistance(lat1, lon1, lat2, lon2) < miles) {
-			return true;
-		} else {
-			return false;
-		}
+		return ((calculateDistance(lat1, lon1, lat2, lon2) < miles) ? true : false);
 	}
 
 	public Boolean filterPrice(Integer price, Integer limit) {
-		if (price <= limit) {
-			return true;
-		} else {
-			return false;
-		}
+    return ((price <= limit) ? true : false);
 	}
 
 	public Boolean filterStars(Integer star, Integer limit) {
-		if (star >= limit) {
-			return true;
-		} else {
-			return false;
-		}
+    return ((star >= limit) ? true : false);
 	}
 
-	public List<Restaurant> search(String search, String geolocation, String sortType, String sortValue,
+	public List<Restaurant> search(String search, String sortType, String sortValue,
 								   Integer stars, Integer price, Integer page, Integer size) throws InvalidSearchError {
-		String[] locations = geolocation.split(",");
 		Iterable<RestaurantEntity> prime = restaurantRepo.searchRestaurantPrimary(search);
 		Iterable<RestaurantEntity> second = restaurantRepo.searchRestaurantSecondary(search);
 
@@ -134,8 +121,6 @@ public class SearchService {
 	}
 
 	public Restaurant convertToDTO(RestaurantEntity entity){
-		System.out.println(entity);
-		//none of this was necessary, modelMapper gets all parameters.
 		return modelMapper.map(entity, Restaurant.class);
 	}
 
@@ -156,11 +141,9 @@ public class SearchService {
 			if ("high".equals(sortValue)) {
 				list = list.stream().sorted((x, y) -> sortStars(y.getAverageRating(), x.getAverageRating()))
 						.collect(Collectors.toList());
-				// Collections.sort(list, new SortByStars());
 			} else {
 				list = list.stream().sorted((x, y) -> sortStars(x.getAverageRating(), y.getAverageRating()))
 						.collect(Collectors.toList());
-				// Collections.sort(list, Collections.reverseOrder(new SortByStars()));
 			}
 			break;
 		case "price":
@@ -172,17 +155,6 @@ public class SearchService {
 						.collect(Collectors.toList());
 			}
 			break;
-//		case "geolocation":
-//			if ("high".equals(sortValue)) {
-//				list = list.stream().sorted((x, y) -> sortDistance(y.getCoordinates().getLatitude(), y.getCoordinates().getLongitude(),
-//                                 x.getCoordinates().getLatitude(), x.getCoordinates().getLongitude()))
-//						.collect(Collectors.toList());
-//			} else {
-//				list = list.stream().sorted((x, y) -> sortDistance(x.getCoordinates().getLatitude(), x.getCoordinates().getLongitude(),
-//						y.getCoordinates().getLatitude(), y.getCoordinates().getLongitude()))
-//						.collect(Collectors.toList());
-//			}
-//			break;
 		default:
 			break;
 		}
@@ -217,10 +189,6 @@ public class SearchService {
 		Iterable<RestaurantEntity> second = restaurantRepo.searchRestaurantSecondary(search);
 
 		for (RestaurantEntity restaurant : prime) {
-//            if(calculateDistance(Double.parseDouble(locations[0]), Double.parseDouble(locations[1]),
-//                                 restaurant.getCoordinates().getLatitude(), restaurant.getCoordinates().getLongitude()) < 20) {
-//                entities.add(restaurant);
-//            }
 			entities.add(restaurant);
 		}
 		for (RestaurantEntity restaurant : second) {
