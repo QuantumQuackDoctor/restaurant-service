@@ -3,11 +3,13 @@ package com.smoothstack.user.service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.database.ormlibrary.food.MenuItemEntity;
 import com.database.ormlibrary.food.PromotionsEntity;
 import com.database.ormlibrary.food.RestaurantRatingEntity;
+import com.smoothstack.user.errors.RestaurantNotFoundException;
 import com.smoothstack.user.model.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -68,7 +70,19 @@ public class SearchService {
 			return 0;
 		}
 	}
-	
+
+	public Restaurant getRestaurant(Long id) throws RestaurantNotFoundException {
+		return convertToDTO(
+				restaurantRepo.findById(id).orElseThrow(() -> new RestaurantNotFoundException("id doesn't exist"))
+		);
+	}
+
+	public Restaurant getRestaurantByName(String name) throws RestaurantNotFoundException {
+		return convertToDTO(
+				restaurantRepo.findByName(name).orElseThrow(() -> new RestaurantNotFoundException("id doesn't exist"))
+		);
+	}
+
 	public Boolean filterDistance(Double lat1, Double lon1, Double lat2, Double lon2, Double miles) {
 		if (calculateDistance(lat1, lon1, lat2, lon2) < miles) {
 			return true;
@@ -122,37 +136,11 @@ public class SearchService {
 
 	public Restaurant convertToDTO(RestaurantEntity entity){
 		System.out.println(entity);
-		Restaurant restaurant = modelMapper.map(entity, Restaurant.class);
-		restaurant.setId(entity.getId());
-		restaurant.setName(entity.getName());
-		restaurant.setIconId(entity.getIconId());
-		restaurant.setBackgroundId(entity.getBackgroundId());
-		for (MenuItemEntity item : entity.getMenu()) {
-			restaurant.addMenuItem(modelMapper.map(item, RestaurantMenu.class));
-		}
-		for (PromotionsEntity item : entity.getPromotions()) {
-			restaurant.addPromotionsItem(modelMapper.map(item, RestaurantPromotions.class));
-		}
-		for (RestaurantRatingEntity item : entity.getRatings()) {
-			restaurant.addRatingsItem(modelMapper.map(item, RestaurantRatings.class));
-		}
-		restaurant.setAverageRating(entity.getAverageRating());
-		restaurant.setAverageTime(entity.getAverageTime());
-		restaurant.setPriceRating(entity.getPriceRating());
-		restaurant.setGeolocation(entity.getGeolocation());
-		restaurant.setAddress(entity.getAddress());
-		RestaurantHours hours = new RestaurantHours();
-		hours.setMON(restaurant.getHours().getMON());
-		hours.setTUE(restaurant.getHours().getTUE());
-		hours.setWED(restaurant.getHours().getWED());
-		hours.setTHU(restaurant.getHours().getTHU());
-		hours.setFRI(restaurant.getHours().getFRI());
-		hours.setSAT(restaurant.getHours().getSAT());
-		hours.setSUN(restaurant.getHours().getSUN());
-		restaurant.setHours(hours);
-		//set list
-		return restaurant;
+		//none of this was necessary, modelMapper gets all parameters.
+		return modelMapper.map(entity, Restaurant.class);
 	}
+
+
 
 	public List<RestaurantEntity> sortFilterList(List<RestaurantEntity> list, String sortType, String sortValue,
 			Integer stars, Integer price) {
@@ -203,7 +191,8 @@ public class SearchService {
 	}
 
 	public List<RestaurantEntity> pageList(List<RestaurantEntity> list, Integer page, Integer size) {
-		return list.subList(page * size, (page + 1) * size);
+		//this can result in an index out of bounds exception
+		return list.subList(page * size, Math.min((page + 1) * size, list.size()));
 	}
 
 	public List<Restaurant> search(String search, String geolocation) throws InvalidSearchError {
