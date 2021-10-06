@@ -40,9 +40,9 @@ pipeline {
                         withCredentials([string(credentialsId:'cfe0c5bd-0177-404d-83e1-bbb3044b52d0', variable:'AWS_ID')])
                         {
                             sh 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com'
-                            sh 'docker build -t java-restaurant-service .'
-                            sh 'docker tag java-restaurant-service:latest ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/java-restaurant-service:latest'
-                            sh 'docker push ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/java-restaurant-service:latest'
+                            sh 'docker build -t restaurant-service .'
+                            sh 'docker tag java-restaurant-service:latest ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/restaurant-service:latest'
+                            sh 'docker push ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/restaurant-service:latest'
                         }
                     }
                 }
@@ -51,7 +51,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId:'cfe0c5bd-0177-404d-83e1-bbb3044b52d0', variable:'AWS_ID')])
                 {
-                    sh 'aws cloudformation deploy --stack-name UserServiceStack --region "${AWS_REGION}" --template-file userService.template --parameter-overrides ImageURL=${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/user-service:latest BaseStackName=BaseInfrastructure  --capabilities CAPABILITY_NAMED_IAM'
+                    sh 'aws cloudformation deploy --stack-name RestaurantServiceStack --region "${AWS_REGION}" --template-file restaurantService.template --parameter-overrides ImageURL=${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/restaurant-service:latest BaseStackName=BaseInfrastructure  --capabilities CAPABILITY_NAMED_IAM'
                 }
             }
         }
