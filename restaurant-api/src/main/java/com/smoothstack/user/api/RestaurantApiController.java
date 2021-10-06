@@ -5,9 +5,11 @@ import com.smoothstack.user.errors.InvalidSearchError;
 import com.smoothstack.user.errors.RestaurantNotFoundException;
 import com.smoothstack.user.model.Restaurant;
 import com.smoothstack.user.service.RestaurantService;
+import com.smoothstack.user.service.S3Service;
 import com.smoothstack.user.service.SearchService;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -24,12 +26,14 @@ public class RestaurantApiController {
 
     private final SearchService searchService;
     private final RestaurantService restaurantService;
+    private final S3Service s3Service;
 
     @org.springframework.beans.factory.annotation.Autowired
     public RestaurantApiController(SearchService searchService,
-                                   RestaurantService restaurantService) {
+                                   RestaurantService restaurantService, S3Service s3Service) {
         this.searchService = searchService;
         this.restaurantService = restaurantService;
+        this.s3Service = s3Service;
     }
 
 
@@ -206,11 +210,22 @@ public class RestaurantApiController {
             produces = {"application/json"},
             consumes = {"application/json", "application/xml"}
     )
-    public ResponseEntity<Void> update
-
-
-    (@ApiParam(value = "Non null properties will be updated, id necessary") @Valid @RequestBody(required = false) RestaurantEntity restaurant) {
+    public ResponseEntity<Void> update(@ApiParam(value = "Non null properties will be updated, id necessary") @Valid @RequestBody(required = false) RestaurantEntity restaurant) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
+    }
+
+    @PostMapping(
+            path = "/restaurants/csv",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public ResponseEntity<Void> uploadCSV(@RequestParam("File") MultipartFile file, @RequestParam(value = "FileName", defaultValue = "") String fileName) throws IllegalArgumentException{
+        s3Service.uploadCSV(file, fileName);
+        return ResponseEntity.ok(null);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e){
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }
