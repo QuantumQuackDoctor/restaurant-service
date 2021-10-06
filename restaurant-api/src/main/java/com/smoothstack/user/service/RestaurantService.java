@@ -22,7 +22,9 @@ public class RestaurantService {
 	}
 
 	public void addMenuItem(MenuItemEntity item) {
-	  // TODO implement function
+	  if (item == null) {
+	    return;
+    }
 	}
 
 	public RestaurantEntity getRestaurantById(Long id) {

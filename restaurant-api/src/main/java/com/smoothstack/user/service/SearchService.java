@@ -83,15 +83,15 @@ public class SearchService {
 	}
 
 	public Boolean filterDistance(Double lat1, Double lon1, Double lat2, Double lon2, Double miles) {
-		return ((calculateDistance(lat1, lon1, lat2, lon2) < miles) ? true : false);
+		return (calculateDistance(lat1, lon1, lat2, lon2) < miles);
 	}
 
 	public Boolean filterPrice(Integer price, Integer limit) {
-    return ((price <= limit) ? true : false);
+    return (price <= limit);
 	}
 
 	public Boolean filterStars(Integer star, Integer limit) {
-    return ((star >= limit) ? true : false);
+    return (star >= limit);
 	}
 
 	public List<Restaurant> search(String search, String sortType, String sortValue,
