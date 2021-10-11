@@ -22,7 +22,6 @@ public class S3Service {
 
     private static final String[] expectedCsvColumns = {
             "address",
-            "average_rating",
             "average_time",
             "geolocation",
             "mon",

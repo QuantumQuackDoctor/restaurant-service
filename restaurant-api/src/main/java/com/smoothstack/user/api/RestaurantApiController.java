@@ -226,6 +226,7 @@ public class RestaurantApiController {
             path = "/restaurants/csv",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Void> uploadCSV(@RequestParam("File") MultipartFile file, @RequestParam(value = "FileName", defaultValue = "") String fileName) throws IllegalArgumentException{
         s3Service.uploadCSV(file, fileName);
         return ResponseEntity.ok(null);
@@ -236,16 +237,6 @@ public class RestaurantApiController {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
-    /**
-     * PATCH /restaurants/menu : Admin Update Restaurant
-     * Update any properties except image, to update image use POST /restaurant/image/{imageId}
-     *
-     * @param restaurant Non null properties will be updated, id necessary (optional)
-     * @return Update successful (status code 200)
-     * or Access token is missing or invalid (status code 401)
-     * or Forbidden (status code 403)
-     * or Not Found (status code 404)
-     */
     @ApiOperation(value = "Admin Update Restaurant Menu", nickname = "addMenuItem", notes = "", authorizations = {
 
             @Authorization(value = "JWT")
