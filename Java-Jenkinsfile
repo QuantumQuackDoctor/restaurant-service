@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    parameters {
+        string(name: 'Environment', defaultValue: params.Environment ?: '')
+    }
     environment {
         AWS_REGION='us-east-1'
     }
@@ -39,10 +42,10 @@ pipeline {
                     script {
                         withCredentials([string(credentialsId:'cfe0c5bd-0177-404d-83e1-bbb3044b52d0', variable:'AWS_ID')])
                         {
-                            sh 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com'
-                            sh 'docker build -t restaurant-service .'
-                            sh 'docker tag restaurant-service:latest ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/restaurant-service:latest'
-                            sh 'docker push ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/restaurant-service:latest'
+                            sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+                            sh "docker build -t restaurant-service-${params.Environment} ."
+                            sh "docker tag restaurant-service-${params.Environment}:latest ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/restaurant-service-${params.Environment}:latest"
+                            sh "docker push ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/restaurant-service-${params.Environment}:latest"
                         }
                     }
                 }
@@ -51,7 +54,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId:'cfe0c5bd-0177-404d-83e1-bbb3044b52d0', variable:'AWS_ID')])
                 {
-                    sh 'aws cloudformation deploy --stack-name RestaurantServiceStack --region "${AWS_REGION}" --template-file restaurantService.template --parameter-overrides ImageURL=${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/restaurant-service:latest BaseStackName=BaseInfrastructure  --capabilities CAPABILITY_NAMED_IAM'
+                    sh "aws cloudformation deploy --stack-name RestaurantServiceStack --region ${AWS_REGION} --template-file restaurantService.template --parameter-overrides ImageURL=${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/restaurant-service-${params.Environment}:latest Environment=${params.Environment} BaseStackName=BaseInfrastructure  --capabilities CAPABILITY_NAMED_IAM"
                 }
             }
         }
