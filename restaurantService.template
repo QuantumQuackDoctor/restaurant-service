@@ -74,7 +74,7 @@ Resources:
                 {
                   "spring":{
                       "datasource":{
-                        "url":"jdbc:postgresql://{{resolve:secretsmanager:DBEndpoint-${Environment}}}:{{resolve:secretsmanager:DBPort-${Environment}}}/{{resolve:secretsmanager:DBName-${Environment}}}",
+                        "url":"jdbc:postgresql:/Orderesolve:secretsmanager:DBEndpoint-${Environment}}}:{{resolve:secretsmanager:DBPort-${Environment}}}/{{resolve:secretsmanager:DBName-${Environment}}}",
                         "username":"{{resolve:secretsmanager:DBUsername-${Environment}}}",
                         "password":"{{resolve:secretsmanager:DBPassword-${Environment}}}"
                       }
@@ -109,7 +109,7 @@ Resources:
       LoadBalancers:
         - ContainerName: RestaurantDefinition
           ContainerPort: 8080
-          TargetGroupArn: !Sub "{{resolve:secretsmanager:UserTGArn-${Environment}}}"
+          TargetGroupArn: !Sub "{{resolve:secretsmanager:RestaurantTGArn-${Environment}}}"
       TaskDefinition: !Ref RestaurantTaskDefinition
       NetworkConfiguration:
         AwsvpcConfiguration:
@@ -123,7 +123,7 @@ Resources:
     Properties:
       Actions:
         - Type: forward
-          TargetGroupArn: !Sub "{{resolve:secretsmanager:UserTGArn-${Environment}}}"
+          TargetGroupArn: !Sub "{{resolve:secretsmanager:RestaurantTGArn-${Environment}}}"
       Conditions:
         - Field: path-pattern
           PathPatternConfig:
