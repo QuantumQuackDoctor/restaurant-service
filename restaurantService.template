@@ -74,7 +74,7 @@ Resources:
                 {
                   "spring":{
                       "datasource":{
-                        "url":"jdbc:postgresql:/Orderesolve:secretsmanager:DBEndpoint-${Environment}}}:{{resolve:secretsmanager:DBPort-${Environment}}}/{{resolve:secretsmanager:DBName-${Environment}}}",
+                        "url":"jdbc:postgresql://{{resolve:secretsmanager:DBEndpoint-${Environment}}}:{{resolve:secretsmanager:DBPort-${Environment}}}/{{resolve:secretsmanager:DBName-${Environment}}}",
                         "username":"{{resolve:secretsmanager:DBUsername-${Environment}}}",
                         "password":"{{resolve:secretsmanager:DBPassword-${Environment}}}"
                       }
