@@ -1,9 +1,13 @@
 package com.smoothstack.user;
 
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.database.security.SecurityConfig;
 import com.fasterxml.jackson.databind.Module;
 import org.modelmapper.ModelMapper;
 import org.openapitools.jackson.nullable.JsonNullableModule;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
@@ -56,6 +60,11 @@ public class OpenAPI2SpringBoot implements CommandLineRunner {
             return 10;
         }
 
+    }
+
+    @Bean
+    public AmazonS3 s3(@Value("${csv.region}") String region) {
+        return AmazonS3ClientBuilder.standard().withRegion(region).withCredentials(new DefaultAWSCredentialsProviderChain()).build();
     }
 
 }
