@@ -54,7 +54,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId:'cfe0c5bd-0177-404d-83e1-bbb3044b52d0', variable:'AWS_ID')])
                 {
-                    sh "aws cloudformation deploy --stack-name RestaurantServiceStack --region ${AWS_REGION} --template-file restaurantService.template --parameter-overrides ImageURL=${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/restaurant-service-${params.Environment}:latest Environment=${params.Environment} BaseStackName=BaseInfrastructure  --capabilities CAPABILITY_NAMED_IAM"
+                    sh "aws cloudformation deploy --stack-name RestaurantServiceStack-${params.Environment} --region ${AWS_REGION} --template-file restaurantService.template --parameter-overrides ImageURL=${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/restaurant-service-${params.Environment}:latest Environment=${params.Environment} BaseStackName=BaseInfrastructure  --capabilities CAPABILITY_NAMED_IAM"
                 }
             }
         }
