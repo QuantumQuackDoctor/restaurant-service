@@ -46,7 +46,7 @@ public class RestaurantApiController {
             @Authorization(value = "JWT")
     }, tags = {"food",})
     public ResponseEntity<List<Restaurant>> getFood(
-            @RequestParam(value = "search", required = true) @Valid @ApiParam(value = "Main search term", required = true) @NotNull String search,
+            @RequestParam(value = "search") @Valid @ApiParam(value = "Main search term", required = true) @NotNull String search,
             @RequestParam(value = "geolocation", required = true) @Valid @ApiParam(value = "Location to search around", required = true) @NotNull String geolocation,
             @RequestParam(value = "sort_type", required = false) @Valid @ApiParam("type of sort") String sortType,
             @RequestParam(value = "sort_values", required = false) @Valid @ApiParam("sort values") String sortValue,
@@ -255,4 +255,6 @@ public class RestaurantApiController {
         restaurantService.addMenuItem(item);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
 }

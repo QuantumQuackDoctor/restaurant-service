@@ -9,30 +9,30 @@ import com.smoothstack.user.repo.RestaurantRepo;
 @Service
 public class RestaurantService {
 
-	private final RestaurantRepo restaurantRepo;
+    private final RestaurantRepo restaurantRepo;
 
-	public RestaurantService(RestaurantRepo restaurantRepo) {
-		this.restaurantRepo = restaurantRepo;
-	}
-
-	public RestaurantEntity addRestaurant(RestaurantEntity restaurant) {
-		restaurantRepo.save(restaurant);
-
-		return restaurant;
-	}
-
-	public void addMenuItem(MenuItemEntity item) {
-	  if (item == null) {
-	    item = null;
+    public RestaurantService(RestaurantRepo restaurantRepo) {
+        this.restaurantRepo = restaurantRepo;
     }
-	}
 
-	public RestaurantEntity getRestaurantById(Long id) {
-		return restaurantRepo.findById(id).get();
-	}
+    public RestaurantEntity addRestaurant(RestaurantEntity restaurant) {
+        restaurantRepo.save(restaurant);
 
-	public void deleteRestaurant(Long id) {
-		restaurantRepo.deleteById(id);
-	}
+        return restaurant;
+    }
+
+    public void addMenuItem(MenuItemEntity item) {
+        if (item == null) {
+            item = null;
+        }
+    }
+
+    public RestaurantEntity getRestaurantById(Long id) {
+        return restaurantRepo.findById(id).get();
+    }
+
+    public void deleteRestaurant(Long id) {
+        restaurantRepo.deleteById(id);
+    }
 
 }
