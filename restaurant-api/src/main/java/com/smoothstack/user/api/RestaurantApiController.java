@@ -2,9 +2,12 @@ package com.smoothstack.user.api;
 
 import com.database.ormlibrary.food.MenuItemEntity;
 import com.database.ormlibrary.food.RestaurantEntity;
+import com.database.ormlibrary.food.RestaurantRatingEntity;
+import com.database.security.AuthDetails;
 import com.smoothstack.user.errors.InvalidSearchError;
 import com.smoothstack.user.errors.RestaurantNotFoundException;
 import com.smoothstack.user.model.Restaurant;
+import com.smoothstack.user.model.RestaurantRatings;
 import com.smoothstack.user.service.RestaurantService;
 import com.smoothstack.user.service.S3Service;
 import com.smoothstack.user.service.SearchService;
@@ -13,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +41,18 @@ public class RestaurantApiController {
         this.s3Service = s3Service;
     }
 
+    @PreAuthorize("hasAuthority('user')")
+    @PutMapping (value = "/restaurants/rating")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK")})
+    @ApiOperation(value = "Search Restaurants", nickname = "getFood", notes = "Search food, matches to restaurant terms", response = Restaurant.class, responseContainer = "List", authorizations = {
+            @Authorization(value = "JWT")
+    }, tags = {"food",})
+    public ResponseEntity<RestaurantRatings> submitRating(@Valid @RequestBody RestaurantRatings restaurantRatings,
+                                             Authentication authentication){
+        AuthDetails authDetails = (AuthDetails) authentication.getPrincipal();
+        return ResponseEntity.ok (restaurantService.submitRating(authDetails.getId(), restaurantRatings));
+    }
 
     @PreAuthorize("hasAuthority('user')")
     @GetMapping(value = "/restaurants/search", produces = {"application/json"})

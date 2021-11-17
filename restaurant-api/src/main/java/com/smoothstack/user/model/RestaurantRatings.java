@@ -20,9 +20,20 @@ public class RestaurantRatings   {
   @JsonProperty("description")
   private String description;
 
+  @JsonProperty ("restaurantId")
+  private Long restaurantId;
+
   public RestaurantRatings image(String imageId) {
     this.imageId = imageId;
     return this;
+  }
+
+  public Long getRestaurantId() {
+    return restaurantId;
+  }
+
+  public void setRestaurantId(Long restaurantId) {
+    this.restaurantId = restaurantId;
   }
 
   /**
