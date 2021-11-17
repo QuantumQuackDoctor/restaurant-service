@@ -14,7 +14,6 @@ import com.smoothstack.user.repo.RestaurantRepo;
 
 import java.util.List;
 import java.util.OptionalDouble;
-import java.util.OptionalInt;
 
 @Service
 public class RestaurantService {
@@ -56,30 +55,35 @@ public class RestaurantService {
         if (userEntity != null) {
             RestaurantRatingEntity restaurantRatingEntity = convertRatingsToEntity(restaurantRatings);
             restaurantRatingEntity.setUser(userEntity);
-            updateRestaurantRatings(restaurantRatings);
             restaurantRatingEntityRepo.save(restaurantRatingEntity);
+            updateRestaurantRatings(restaurantRatings, restaurantRatingEntity);
+            return convertRatingsToDTO(restaurantRatingEntity);
         }
         //TODO: add an exception for user not found later
         return null;
     }
 
-    private void updateRestaurantRatings(RestaurantRatings restaurantRatings) {
-        RestaurantEntity restaurantEntity = restaurantRepo.findById(restaurantRatings.getRestaurantId())
+    private void updateRestaurantRatings(RestaurantRatings restaurantRatings, RestaurantRatingEntity restaurantRatingEntity) {
+        RestaurantEntity restaurantEntity = restaurantRepo.findById(restaurantRatings.getRestaurant())
                 .orElse(null);
         if (restaurantEntity != null) {
             List<RestaurantRatingEntity> ratingEntities = restaurantEntity.getRatings();
-            ratingEntities.add(convertRatingsToEntity(restaurantRatings));
+            ratingEntities.add(restaurantRatingEntity);
             OptionalDouble avgRating = ratingEntities.stream().mapToInt(RestaurantRatingEntity::getStars).average();
             if (avgRating.isPresent()) {
                 restaurantEntity.setAverageRating((int) Math.ceil(avgRating.getAsDouble()));
                 restaurantEntity.setRatings(ratingEntities);
             }
+            restaurantRepo.save (restaurantEntity);
         }
     }
 
     private RestaurantRatingEntity convertRatingsToEntity(RestaurantRatings restaurantRatings) {
-
         return modelMapper.map(restaurantRatings, RestaurantRatingEntity.class);
+    }
+
+    private RestaurantRatings convertRatingsToDTO (RestaurantRatingEntity restaurantRatingEntity) {
+        return modelMapper.map (restaurantRatingEntity, RestaurantRatings.class);
     }
 
 }

@@ -42,13 +42,13 @@ public class RestaurantApiController {
     }
 
     @PreAuthorize("hasAuthority('user')")
-    @PutMapping (value = "/restaurants/rating")
+    @PutMapping (path = "/restaurants/rating")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK")})
-    @ApiOperation(value = "Search Restaurants", nickname = "getFood", notes = "Search food, matches to restaurant terms", response = Restaurant.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Submitting Ratings", nickname = "submitRating", authorizations = {
             @Authorization(value = "JWT")
-    }, tags = {"food",})
-    public ResponseEntity<RestaurantRatings> submitRating(@Valid @RequestBody RestaurantRatings restaurantRatings,
+    }, tags = {"rating",})
+    public ResponseEntity<RestaurantRatings> submitRating(@RequestBody RestaurantRatings restaurantRatings,
                                              Authentication authentication){
         AuthDetails authDetails = (AuthDetails) authentication.getPrincipal();
         return ResponseEntity.ok (restaurantService.submitRating(authDetails.getId(), restaurantRatings));
