@@ -69,7 +69,7 @@ public class RestaurantService {
         if (restaurantEntity != null) {
             List<RestaurantRatingEntity> ratingEntities = restaurantEntity.getRatings();
             ratingEntities.add(restaurantRatingEntity);
-            OptionalDouble avgRating = ratingEntities.stream().mapToInt(RestaurantRatingEntity::getStars).average();
+            OptionalDouble avgRating = ratingEntities.stream().mapToDouble(RestaurantRatingEntity::getStars).average();
             if (avgRating.isPresent()) {
                 restaurantEntity.setAverageRating((int) Math.ceil(avgRating.getAsDouble()));
                 restaurantEntity.setRatings(ratingEntities);
