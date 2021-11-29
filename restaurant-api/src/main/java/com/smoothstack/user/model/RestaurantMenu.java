@@ -12,6 +12,10 @@ import javax.validation.Valid;
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-30T22:10:31.533216200-06:00[America/Denver]")
 public class RestaurantMenu   {
+
+  @JsonProperty ("id")
+  private Long id;
+
   @JsonProperty("name")
   private String name;
 
@@ -34,6 +38,14 @@ public class RestaurantMenu   {
   public RestaurantMenu name(String name) {
     this.name = name;
     return this;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   /**

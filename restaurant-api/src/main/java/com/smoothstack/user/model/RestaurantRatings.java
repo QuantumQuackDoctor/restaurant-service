@@ -11,8 +11,8 @@ import javax.validation.constraints.*;
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-30T22:10:31.533216200-06:00[America/Denver]")
 public class RestaurantRatings   {
-  @JsonProperty("image")
-  private String imageId;
+  @JsonProperty("imageURL")
+  private String imageURL;
 
   @JsonProperty("stars")
   private Integer stars;
@@ -20,9 +20,20 @@ public class RestaurantRatings   {
   @JsonProperty("description")
   private String description;
 
+  @JsonProperty ("restaurant")
+  private Long restaurant;
+
   public RestaurantRatings image(String imageId) {
-    this.imageId = imageId;
+    this.imageURL = imageId;
     return this;
+  }
+
+  public Long getRestaurant() {
+    return restaurant;
+  }
+
+  public void setRestaurant(Long restaurant) {
+    this.restaurant = restaurant;
   }
 
   /**
@@ -32,12 +43,12 @@ public class RestaurantRatings   {
   @ApiModelProperty(value = "filepath")
 
 
-  public String getImageId() {
-    return imageId;
+  public String getImageURL() {
+    return imageURL;
   }
 
-  public void setImageId(String imageId) {
-    this.imageId = imageId;
+  public void setImageURL(String imageURL) {
+    this.imageURL = imageURL;
   }
 
   public RestaurantRatings stars(Integer stars) {
@@ -92,14 +103,14 @@ public class RestaurantRatings   {
       return false;
     }
     RestaurantRatings restaurantRatings = (RestaurantRatings) o;
-    return Objects.equals(this.imageId, restaurantRatings.imageId) &&
+    return Objects.equals(this.imageURL, restaurantRatings.imageURL) &&
         Objects.equals(this.stars, restaurantRatings.stars) &&
         Objects.equals(this.description, restaurantRatings.description);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(imageId, stars, description);
+    return Objects.hash(imageURL, stars, description);
   }
 
   @Override
@@ -107,7 +118,7 @@ public class RestaurantRatings   {
     StringBuilder sb = new StringBuilder();
     sb.append("class RestaurantRatings {\n");
     
-    sb.append("    image: ").append(toIndentedString(imageId)).append("\n");
+    sb.append("    image: ").append(toIndentedString(imageURL)).append("\n");
     sb.append("    stars: ").append(toIndentedString(stars)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("}");

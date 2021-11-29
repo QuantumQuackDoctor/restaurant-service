@@ -124,8 +124,6 @@ public class SearchService {
 		return modelMapper.map(entity, Restaurant.class);
 	}
 
-
-
 	public List<RestaurantEntity> sortFilterList(List<RestaurantEntity> list, String sortType, String sortValue,
 			Integer stars, Integer price) {
 		if (stars != null && stars != 0) {
